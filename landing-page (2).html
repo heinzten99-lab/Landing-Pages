@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<!-- ===================================================================
+     OBSIDIAN PERFORMANCE COACHING — LANDING PAGE
+     Standalone static page for Vercel / GitHub deployment.
+     WhatsApp number wired in: +62 858-2829-5164
+     Replace [BRAND NAME], testimonial photos/quotes, coach photo, and
+     stat numbers with your real assets — marked with <!-- EDIT ME --> below.
+
+     LOCAL IMAGES: to swap any Unsplash placeholder for your own file,
+     create an /images folder next to this HTML file in your repo, put
+     your image there (e.g. images/hero.webp), then change that img's
+     src="..." to src="images/hero.webp". Each image below has an
+     EDIT ME comment showing exactly which file to swap.
+=================================================================== -->
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><!-- EDIT ME: replace with your real brand name --> Obsidian Coach — Online Fitness Coaching 1-on-1</title>
+<meta name="description" content="Personalized 1-on-1 online fitness coaching for men and women 20–35. Training, nutrition, and direct coach support built around your goals.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  /* CSS custom properties (color variables), all in one place for
+     easy rebranding. Scoped to #opc-root instead of global :root so
+     these never leak into or collide with other CSS if this page is
+     ever embedded alongside other components in your Vercel project. */
+  #opc-root {
+    --black: #0B0B0D;
+    --charcoal: #1A1B1E;
+    --charcoal-2: #202226;
+    --white: #F7F7F5;
+    --gray: #A7ADB5;
+    --blue: #3B82F6;
+    --line: rgba(167,173,181,0.14);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--black);
+    color: var(--white);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  #opc-root * { box-sizing: border-box; margin: 0; padding: 0; }
+  #opc-root img { max-width: 100%; display: block; }
+  #opc-root .cover-img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center top;
+    image-rendering: -webkit-optimize-contrast;
+  }
+  #opc-root a { text-decoration: none; color: inherit; }
+  #opc-root .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  #opc-root h1, #opc-root h2, #opc-root h3 {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+  }
+  #opc-root .mono {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+  }
+  #opc-root .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  #opc-root .eyebrow::before {
+    content: "";
+    width: 18px;
+    height: 1px;
+    background: var(--blue);
+    display: inline-block;
+  }
+  #opc-root section { padding: 88px 0; border-bottom: 1px solid var(--line); }
+  #opc-root section.charcoal { background: var(--charcoal); }
+  #opc-root .center { text-align: center; }
+  #opc-root .lede {
+    color: var(--gray);
+    font-size: 18px;
+    max-width: 640px;
+  }
+  #opc-root .center .lede { margin-left: auto; margin-right: auto; }
+
+  /* NAV */
+  #opc-root .nav {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(11,11,13,0.86);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  #opc-root .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px; max-width: 1120px; margin: 0 auto;
+  }
+  #opc-root .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 17px;
+    letter-spacing: -0.01em;
+  }
+  #opc-root .nav-logo span { color: var(--blue); }
+  #opc-root .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600; font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+  }
+  #opc-root .btn-primary {
+    background: var(--blue); color: #fff; border: 1px solid var(--blue);
+  }
+  #opc-root .btn-primary:hover { background: #2f6fe0; transform: translateY(-1px); }
+  #opc-root .btn-ghost {
+    background: transparent; color: var(--white); border: 1px solid var(--line);
+  }
+  #opc-root .btn-ghost:hover { border-color: var(--gray); }
+  #opc-root .btn-small { padding: 10px 20px; font-size: 14px; }
+
+  /* HERO */
+  #opc-root .hero { padding: 110px 0 96px; position: relative; overflow: hidden; }
+  #opc-root .hero::before {
+    content: "";
+    position: absolute; top: -200px; right: -160px;
+    width: 520px; height: 520px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,130,246,0.16), transparent 70%);
+    pointer-events: none;
+  }
+  #opc-root .hero-inner {
+    position: relative;
+    display: grid; grid-template-columns: 1.05fr 0.85fr; gap: 56px; align-items: center;
+  }
+  #opc-root .hero h1 {
+    font-size: clamp(34px, 4.6vw, 54px);
+    line-height: 1.08;
+    margin-bottom: 24px;
+  }
+  #opc-root .hero .lede { font-size: 19px; margin-bottom: 40px; }
+  #opc-root .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+  #opc-root .hero-media {
+    position: relative;
+    aspect-ratio: 4/5;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--charcoal-2);
+  }
+  #opc-root .hero-media::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(11,11,13,0) 55%, rgba(11,11,13,0.55) 100%);
+    pointer-events: none;
+  }
+
+  /* STAT / SOCIAL PROOF READOUT */
+  #opc-root .stat-strip {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
+    margin-top: 56px;
+  }
+  #opc-root .stat-cell {
+    padding: 26px 20px; border-right: 1px solid var(--line);
+    background: var(--charcoal);
+  }
+  #opc-root .stat-cell:last-child { border-right: none; }
+  #opc-root .stat-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 26px; font-weight: 700; color: var(--blue);
+    display: block; margin-bottom: 6px;
+  }
+  #opc-root .stat-label {
+    font-size: 12.5px; color: var(--gray); letter-spacing: 0.01em;
+  }
+
+  /* PROBLEM / SOLUTION */
+  #opc-root .split {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start;
+  }
+  #opc-root .split h2 { font-size: clamp(28px, 3.6vw, 38px); margin-bottom: 20px; }
+  #opc-root .split p { color: var(--gray); font-size: 16.5px; margin-bottom: 14px; }
+  #opc-root .split p:last-child { margin-bottom: 0; }
+  #opc-root .split .tag-no {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; color: var(--gray);
+    display: block; margin-top: 6px;
+  }
+  #opc-root .split .tag-no::before { content: "— "; color: var(--blue); }
+
+  /* WHY IT WORKS */
+  #opc-root .grid-4 {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
+  }
+  #opc-root .why-card { background: var(--black); padding: 32px 26px; }
+  #opc-root section.charcoal .why-card { background: var(--charcoal); }
+  #opc-root .why-num {
+    font-family: 'JetBrains Mono', monospace; color: var(--blue);
+    font-size: 13px; margin-bottom: 18px; display: block;
+  }
+  #opc-root .why-card h3 { font-size: 18px; margin-bottom: 10px; }
+  #opc-root .why-card p { color: var(--gray); font-size: 15px; }
+
+  /* COACH */
+  #opc-root .coach {
+    display: grid; grid-template-columns: 300px 1fr; gap: 56px; align-items: center;
+  }
+  #opc-root .coach-photo {
+    aspect-ratio: 4/5; background: var(--charcoal-2);
+    border: 1px solid var(--line); border-radius: 6px;
+    overflow: hidden;
+  }
+  #opc-root .coach h2 { font-size: clamp(26px, 3.4vw, 34px); margin-bottom: 18px; }
+  #opc-root .coach p { color: var(--gray); font-size: 16.5px; margin-bottom: 14px; }
+
+  /* INCLUDED */
+  #opc-root .incl-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px 40px; margin-top: 44px;
+  }
+  #opc-root .incl-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 18px 0; border-bottom: 1px solid var(--line);
+  }
+  #opc-root .incl-check {
+    width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;
+    border: 1px solid var(--blue); border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #opc-root .incl-check svg { width: 11px; height: 11px; }
+  #opc-root .incl-item span { font-size: 15.5px; color: var(--white); }
+
+  /* TRANSFORMATIONS */
+  #opc-root .transform-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px;
+  }
+  #opc-root .transform-card {
+    border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--charcoal);
+  }
+  #opc-root .transform-img {
+    aspect-ratio: 1/1; background: var(--charcoal-2);
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  #opc-root .transform-body { padding: 20px; }
+  #opc-root h3.transform-name { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+  #opc-root .transform-body p { color: var(--gray); font-size: 14.5px; }
+
+  /* PLANS */
+  #opc-root .plans-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px;
+  }
+  #opc-root .plan-card {
+    border: 1px solid var(--line); border-radius: 8px; padding: 40px 32px;
+    background: var(--charcoal); display: flex; flex-direction: column;
+    position: relative;
+  }
+  #opc-root .plan-card.featured { border-color: var(--blue); }
+  #opc-root .plan-badge {
+    position: absolute; top: -12px; left: 32px;
+    background: var(--blue); color: #fff;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+    padding: 5px 12px; border-radius: 3px; text-transform: uppercase;
+  }
+  #opc-root h3.plan-name { font-size: 13px; color: var(--gray); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+  #opc-root .plan-price { font-family: 'Space Grotesk', sans-serif; font-size: 38px; font-weight: 700; margin-bottom: 6px; }
+  #opc-root .plan-price sup { font-size: 15px; color: var(--gray); font-weight: 500; }
+  #opc-root .plan-desc { color: var(--gray); font-size: 15px; margin-bottom: 28px; }
+  #opc-root .plan-list { list-style: none; margin-bottom: 32px; flex-grow: 1; }
+  #opc-root .plan-list li {
+    padding: 10px 0; border-top: 1px solid var(--line);
+    font-size: 15px; display: flex; gap: 10px; align-items: center;
+  }
+  #opc-root .plan-list li::before { content: "→"; color: var(--blue); font-size: 13px; }
+  #opc-root .plan-card .btn { width: 100%; }
+
+  /* CONSULT STRIP */
+  #opc-root .consult-strip {
+    border: 1px solid var(--line); border-radius: 8px; padding: 36px 40px;
+    display: flex; justify-content: space-between; align-items: center; gap: 24px;
+    margin-top: 24px; background: var(--black);
+  }
+  #opc-root section.charcoal .consult-strip { background: var(--charcoal-2); }
+  #opc-root .consult-strip h3 { font-size: 19px; margin-bottom: 6px; }
+  #opc-root .consult-strip p { color: var(--gray); font-size: 14.5px; max-width: 480px; }
+
+  /* FAQ */
+  #opc-root .faq-list { margin-top: 40px; max-width: 780px; }
+  #opc-root details {
+    border-bottom: 1px solid var(--line); padding: 22px 0;
+  }
+  #opc-root summary {
+    cursor: pointer; list-style: none; display: flex;
+    justify-content: space-between; align-items: center; gap: 20px;
+    font-size: 17px; font-weight: 600; color: var(--white);
+  }
+  #opc-root summary::-webkit-details-marker { display: none; }
+  #opc-root summary::after {
+    content: "+"; font-family: 'JetBrains Mono', monospace; color: var(--blue);
+    font-size: 22px; flex-shrink: 0; transition: transform 0.2s ease;
+  }
+  #opc-root details[open] summary::after { transform: rotate(45deg); }
+  #opc-root details p { color: var(--gray); font-size: 15.5px; margin-top: 14px; max-width: 640px; }
+
+  /* FINAL CTA */
+  #opc-root .final-cta { text-align: center; padding: 110px 0; }
+  #opc-root .final-cta h2 { font-size: clamp(30px, 4.5vw, 46px); margin-bottom: 20px; }
+  #opc-root .final-cta .lede { margin: 0 auto 40px; font-size: 18px; }
+
+  /* FOOTER */
+  #opc-root footer { padding: 32px 0; }
+  #opc-root footer .wrap {
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+  }
+  #opc-root footer p { color: var(--gray); font-size: 13px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 860px) {
+    #opc-root section { padding: 64px 0; }
+    #opc-root .split { grid-template-columns: 1fr; gap: 36px; }
+    #opc-root .grid-4 { grid-template-columns: 1fr 1fr; }
+    #opc-root .stat-strip { grid-template-columns: 1fr 1fr; }
+    #opc-root .stat-cell { border-bottom: 1px solid var(--line); }
+    #opc-root .coach { grid-template-columns: 1fr; }
+    #opc-root .coach-photo { max-width: 240px; margin: 0 auto; }
+    #opc-root .incl-grid { grid-template-columns: 1fr; }
+    #opc-root .transform-grid { grid-template-columns: 1fr; }
+    #opc-root .plans-grid { grid-template-columns: 1fr; }
+    #opc-root .consult-strip { flex-direction: column; align-items: flex-start; }
+    #opc-root .hero { padding: 72px 0 60px; }
+    #opc-root .hero-ctas .btn { width: 100%; }
+    #opc-root .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+    #opc-root .hero-media { aspect-ratio: 5/4; order: -1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #opc-root * { transition: none !important; }
+  }
+</style>
+
+</head>
+<body>
+
+<div id="opc-root">
+
+  <!-- NAV -->
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="nav-logo"><!-- EDIT ME: replace with your brand name --> OBSIDIAN<span>.</span>COACH</div>
+      <a class="btn btn-primary btn-small" href="https://wa.me/6285828295164?text=Halo%2C%20saya%20mau%20tanya-tanya%20soal%20coaching" target="_blank" rel="noopener">Chat WhatsApp</a>
+    </div>
+  </div>
+
+  <!-- 1. HERO -->
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div>
+        <div class="eyebrow">1-on-1 Online Coaching</div>
+        <h1>Build More Than Muscle. Build a Physique You Can Be Proud Of.</h1>
+        <p class="lede">Whether your goal is to break through a plateau, build quality muscle, or finally train with a structured plan, every decision is personalized to your body, lifestyle, and goals.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="https://wa.me/6285828295164?text=Halo%2C%20saya%20mau%20book%20konsultasi%20coaching" target="_blank" rel="noopener">Book Your Consultation</a>
+          <a class="btn btn-ghost" href="#plans">View Coaching Plans</a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <!-- EDIT ME: swap src for your own file, e.g. src="images/hero.webp" -->
+        <img class="cover-img" src="https://images.unsplash.com/photo-1541600383005-565c949cf777?auto=format&fit=crop&w=1200&q=80" alt="Client mid-lift during a coached training session" width="900" height="1125" fetchpriority="high">
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. SOCIAL PROOF -->
+  <section class="charcoal">
+    <div class="wrap center">
+      <div class="eyebrow" style="justify-content:center;">Social Proof</div>
+      <h2 style="font-size:clamp(26px,3.4vw,36px);">Trusted by Lifters Who Want Real Progress.</h2>
+      <div class="stat-strip">
+        <div class="stat-cell">
+          <span class="stat-num mono"><!-- EDIT ME --> 49K+</span>
+          <span class="stat-label">Fitness Community</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-num mono"><!-- EDIT ME --> Multiple</span>
+          <span class="stat-label">Bodybuilding Championships</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-num mono">1-on-1</span>
+          <span class="stat-label">Personalized Coaching</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-num mono">24/7</span>
+          <span class="stat-label">Support Throughout Your Journey</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. THE PROBLEM -->
+  <section>
+    <div class="wrap split">
+      <div>
+        <div class="eyebrow">The Problem</div>
+        <h2>You're Working Hard. So Why Aren't You Growing?</h2>
+      </div>
+      <div>
+        <p>Most intermediate lifters don't fail because they lack motivation. They fail because they're relying on guesswork.</p>
+        <p>You train consistently, eat "pretty well," and buy supplements that promise everything, yet your physique barely changes.</p>
+        <p>Without a structured plan, progress becomes frustratingly slow.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. THE SOLUTION -->
+  <section class="charcoal">
+    <div class="wrap split">
+      <div>
+        <div class="eyebrow">The Solution</div>
+        <h2>Coaching Built Around You, Not Around Generic Programs.</h2>
+      </div>
+      <div>
+        <p>Every athlete is different. That's why your training, nutrition, recovery strategy, and weekly adjustments are designed specifically for your current condition, experience level, and long-term goal.</p>
+        <span class="tag-no">No copied PDF.</span>
+        <span class="tag-no">No one-size-fits-all template.</span>
+        <p style="margin-top:14px;">Just a plan that evolves as you do.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. WHY THIS COACHING WORKS -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">Why This Works</div>
+      <h2 style="font-size:clamp(28px,3.6vw,38px); max-width:600px;">A System, Not a Guessing Game.</h2>
+      <div class="grid-4" style="margin-top:44px;">
+        <div class="why-card">
+          <span class="why-num">01</span>
+          <h3>Personalized Programming</h3>
+          <p>Training designed around your schedule, equipment, experience, and recovery capacity.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-num">02</span>
+          <h3>Nutrition That Fits Your Lifestyle</h3>
+          <p>A practical nutrition strategy you can actually sustain.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-num">03</span>
+          <h3>Direct Coach Support</h3>
+          <p>Questions don't wait until next week. Stay connected and receive guidance whenever challenges arise.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-num">04</span>
+          <h3>Continuous Adjustments</h3>
+          <p>Your body changes. Your program should too. Weekly feedback keeps everything moving toward your goal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. MEET YOUR COACH -->
+  <section class="charcoal">
+    <div class="wrap coach">
+      <div class="coach-photo">
+        <!-- EDIT ME: swap src for your own file, e.g. src="images/coach.webp" -->
+        <img class="cover-img" src="https://images.unsplash.com/photo-1682530677364-a59c862054df?auto=format&fit=crop&w=800&q=80" alt="Your coach" width="600" height="750" loading="lazy">
+      </div>
+      <div>
+        <div class="eyebrow">Meet Your Coach</div>
+        <h2>Experience. Discipline. Results.</h2>
+        <p>Behind every transformation is a coach who understands both the science and the reality of building muscle.</p>
+        <p>Through years of competitive experience, content creation, and coaching, I've helped lifters simplify the process, avoid unnecessary mistakes, and focus on what truly drives progress.</p>
+        <p>This isn't about shortcuts. It's about building a stronger physique through consistency, education, and smart programming.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. WHAT'S INCLUDED -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">What's Included</div>
+      <h2 style="font-size:clamp(28px,3.6vw,38px); max-width:600px;">Every Coaching Plan Includes</h2>
+      <div class="incl-grid">
+        <div class="incl-item"><span class="incl-check"><svg viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#3B82F6" stroke-width="1.6"/></svg></span><span>Personalized training program</span></div>
+        <div class="incl-item"><span class="incl-check"><svg viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#3B82F6" stroke-width="1.6"/></svg></span><span>Customized nutrition guidance</span></div>
+        <div class="incl-item"><span class="incl-check"><svg viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#3B82F6" stroke-width="1.6"/></svg></span><span>Goal-based meal planning</span></div>
+        <div class="incl-item"><span class="incl-check"><svg viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#3B82F6" stroke-width="1.6"/></svg></span><span>Progress monitoring</span></div>
+        <div class="incl-item"><span class="incl-check"><svg viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#3B82F6" stroke-width="1.6"/></svg></span><span>Direct communication with your coach</span></div>
+        <div class="incl-item"><span class="incl-check"><svg viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#3B82F6" stroke-width="1.6"/></svg></span><span>Technique and training advice</span></div>
+        <div class="incl-item"><span class="incl-check"><svg viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#3B82F6" stroke-width="1.6"/></svg></span><span>Lifestyle adjustments when needed</span></div>
+        <div class="incl-item"><span class="incl-check"><svg viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#3B82F6" stroke-width="1.6"/></svg></span><span>Ongoing accountability</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. TRANSFORMATIONS -->
+  <section class="charcoal">
+    <div class="wrap">
+      <div class="eyebrow">Transformations</div>
+      <h2 style="font-size:clamp(28px,3.6vw,38px); max-width:600px;">Real People. Real Progress.</h2>
+      <p class="lede" style="margin-top:16px;">Every transformation tells a different story. Different starting points. Different goals. One proven coaching process.</p>
+      <div class="transform-grid">
+        <div class="transform-card">
+          <div class="transform-img">
+            <!-- EDIT ME: swap src for your own file, e.g. src="images/transform-1.webp" -->
+            <img class="cover-img" src="https://images.unsplash.com/photo-1632781297772-1d68f375d878?auto=format&fit=crop&w=800&h=800&q=80" alt="Client transformation, before and after" width="800" height="800" loading="lazy">
+          </div>
+          <div class="transform-body">
+            <h3 class="transform-name"><!-- EDIT ME --> Client Name — 12 Weeks</h3>
+            <p><!-- EDIT ME --> Short quote about their result and experience.</p>
+          </div>
+        </div>
+        <div class="transform-card">
+          <div class="transform-img">
+            <!-- EDIT ME: swap src for your own file, e.g. src="images/transform-2.webp" -->
+            <img class="cover-img" src="https://images.unsplash.com/photo-1621750627159-cf77b0b91aac?auto=format&fit=crop&w=800&h=800&q=80" alt="Client transformation, before and after" width="800" height="800" loading="lazy">
+          </div>
+          <div class="transform-body">
+            <h3 class="transform-name"><!-- EDIT ME --> Client Name — 16 Weeks</h3>
+            <p><!-- EDIT ME --> Short quote about their result and experience.</p>
+          </div>
+        </div>
+        <div class="transform-card">
+          <div class="transform-img">
+            <!-- EDIT ME: swap src for your own file, e.g. src="images/transform-3.webp" -->
+            <img class="cover-img" src="https://images.unsplash.com/photo-1577221084712-45b0445d2b00?auto=format&fit=crop&w=800&h=800&q=80" alt="Client transformation, before and after" width="800" height="800" loading="lazy">
+          </div>
+          <div class="transform-body">
+            <h3 class="transform-name"><!-- EDIT ME --> Client Name — Lifetime Client</h3>
+            <p><!-- EDIT ME --> Short quote about their result and experience.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. COACHING PLANS -->
+  <section id="plans">
+    <div class="wrap">
+      <div class="eyebrow">Coaching Plans</div>
+      <h2 style="font-size:clamp(28px,3.6vw,38px); max-width:600px;">Choose the Coaching That Fits Your Goal</h2>
+
+      <div class="plans-grid">
+        <div class="plan-card featured">
+          <div class="plan-badge">Most Chosen</div>
+          <h3 class="plan-name">Lifetime Coaching</h3>
+          <div class="plan-price">Rp700<span style="font-size:20px;">rb</span><sup>/bulan</sup></div>
+          <p class="plan-desc">For lifters who want long-term guidance without time limitations.</p>
+          <ul class="plan-list">
+            <li>Personalized training</li>
+            <li>Customized nutrition</li>
+            <li>Meal planning</li>
+            <li>Ongoing support</li>
+            <li>Progress adjustments</li>
+            <li>Direct consultation</li>
+          </ul>
+          <a class="btn btn-primary" href="https://wa.me/6285828295164?text=Halo%2C%20saya%20mau%20mulai%20Lifetime%20Coaching" target="_blank" rel="noopener">Start Lifetime Coaching</a>
+        </div>
+
+        <div class="plan-card">
+          <h3 class="plan-name">12-Week Online Coaching</h3>
+          <div class="plan-price">Rp400<span style="font-size:20px;">rb</span></div>
+          <p class="plan-desc">Ideal if you're looking for structured guidance over a focused coaching period.</p>
+          <ul class="plan-list">
+            <li>12 weeks of support</li>
+            <li>Personalized programming</li>
+            <li>Nutrition guidance</li>
+            <li>Weekly adjustments</li>
+            <li>Coach accountability</li>
+          </ul>
+          <a class="btn btn-ghost" href="https://wa.me/6285828295164?text=Halo%2C%20saya%20mau%20book%2012-Week%20Coaching" target="_blank" rel="noopener">Book 12-Week Coaching</a>
+        </div>
+      </div>
+
+      <div class="consult-strip">
+        <div>
+          <h3>Performance Strategy Consultation</h3>
+          <p>For experienced lifters seeking expert guidance on training progression, recovery, and informed performance decisions.</p>
+        </div>
+        <a class="btn btn-ghost btn-small" href="https://wa.me/6285828295164?text=Halo%2C%20saya%20mau%20book%20Performance%20Strategy%20Consultation" target="_blank" rel="noopener">Book a Consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. FAQ -->
+  <section class="charcoal">
+    <div class="wrap">
+      <div class="eyebrow">FAQ</div>
+      <h2 style="font-size:clamp(28px,3.6vw,38px); max-width:600px;">Questions, Answered.</h2>
+      <div class="faq-list">
+        <details>
+          <summary>Who is this coaching for?</summary>
+          <p>Men and women who already have gym experience and want a structured approach to building muscle and improving performance.</p>
+        </details>
+        <details>
+          <summary>Is this suitable for beginners?</summary>
+          <p>This coaching is primarily designed for individuals with prior training experience.</p>
+        </details>
+        <details>
+          <summary>Do I need access to a commercial gym?</summary>
+          <p>No. Your program will be adjusted based on the equipment available to you.</p>
+        </details>
+        <details>
+          <summary>How often do we communicate?</summary>
+          <p>You'll have direct access to your coach throughout your coaching period for guidance and feedback.</p>
+        </details>
+        <details>
+          <summary>Is nutrition included?</summary>
+          <p>Yes. Your nutrition strategy is customized to your goals, lifestyle, and preferences.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. FINAL CTA -->
+  <section class="final-cta" style="border-bottom:none;">
+    <div class="wrap">
+      <h2>Stop Guessing. Start Progressing.</h2>
+      <p class="lede">The difference between staying where you are and reaching your next level isn't motivation. It's having a plan that's built for you.</p>
+      <a class="btn btn-primary" href="https://wa.me/6285828295164?text=Halo%2C%20saya%20mau%20book%20konsultasi%20coaching" target="_blank" rel="noopener">Book Your Consultation</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p>&copy; 2026 <!-- EDIT ME --> Obsidian Coach. All rights reserved.</p>
+      <p>Online coaching for men &amp; women 20–35.</p>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
