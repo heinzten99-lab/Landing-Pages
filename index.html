@@ -3,8 +3,8 @@
      OBSIDIAN PERFORMANCE COACHING — LANDING PAGE
      Standalone static page for Vercel / GitHub deployment.
      WhatsApp number wired in: +62 858-2829-5164
-     Replace [BRAND NAME], testimonial photos/quotes, coach photo, and
-     stat numbers with your real assets — marked with <!-- EDIT ME --> below.
+     Replace brand name, testimonial photos/quotes, coach photo, and
+     stat numbers with your real assets, marked with EDIT ME below.
 
      LOCAL IMAGES: to swap any Unsplash placeholder for your own file,
      create an /images folder next to this HTML file in your repo, put
@@ -16,12 +16,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><!-- EDIT ME: replace with your real brand name --> Obsidian Coach — Online Fitness Coaching 1-on-1</title>
+<title>Obsidian Coach — Online Fitness Coaching 1-on-1</title>
+<!-- EDIT ME: replace "Obsidian Coach" above with your real brand name -->
 <meta name="description" content="Personalized 1-on-1 online fitness coaching for men and women 20–35. Training, nutrition, and direct coach support built around your goals.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
+  /* Global reset: removes default browser body margin and ensures
+     the background is full-bleed edge-to-edge with no white gaps,
+     even before #opc-root's own styles apply. */
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #0B0B0D;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
   /* CSS custom properties (color variables), all in one place for
      easy rebranding. Scoped to #opc-root instead of global :root so
      these never leak into or collide with other CSS if this page is
