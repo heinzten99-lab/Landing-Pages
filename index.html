@@ -183,8 +183,15 @@
   #nlg-root .nlg-project-body .nlg-btn { width: 100%; margin-top: 8px; }
 
   /* ---------- KPR CALCULATOR ---------- */
-  #nlg-kpr { background: var(--surface); border-radius: var(--radius); margin: 0 32px; padding: 64px; }
+  #nlg-kpr { background: var(--surface); border-radius: var(--radius); margin: 0 32px; padding: 64px; overflow-x: hidden; }
   #nlg-kpr-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  /* Classic CSS Grid trap: grid items default to min-width:auto, which stops a
+     1fr column from ever shrinking below its content's intrinsic width (a long
+     "Rp 10.000.000.000" value, a slider, a canvas). That forces the whole grid
+     — and the page — wider than the viewport on mobile, which is exactly what
+     shows up as "must zoom below 100% to see it normally". min-width:0 lets
+     the column actually respect its 1fr track. */
+  #nlg-kpr-inner > div, #nlg-kpr-output { min-width: 0; }
   #nlg-root .nlg-field { margin-bottom: 22px; }
   #nlg-root .nlg-field label { display: flex; justify-content: space-between; font-size: 13px; color: rgba(216,220,227,0.8); margin-bottom: 8px; }
   #nlg-root .nlg-field label b { color: var(--gold); font-weight: 600; }
@@ -204,7 +211,7 @@
   #nlg-kpr-output .nlg-out-row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px; }
   #nlg-kpr-output .nlg-out-row span:first-child { color: rgba(216,220,227,0.65); }
   #nlg-kpr-output .nlg-out-row span:last-child { font-weight: 600; color: var(--white); }
-  #nlg-kpr canvas { max-height: 160px; margin: 20px 0; }
+  #nlg-kpr canvas { max-height: 160px; margin: 20px 0; min-width: 0; max-width: 100%; }
 
   /* ---------- TIMELINE (WHY CHOOSE US) ---------- */
   #nlg-timeline { position: relative; }
@@ -235,8 +242,9 @@
   #nlg-custom-map { width: 100%; height: 100%; flex-grow: 1; }
 
   /* ---------- INVESTMENT CALCULATOR ---------- */
-  #nlg-invest { background: linear-gradient(135deg, rgba(200,169,106,0.06), transparent); }
+  #nlg-invest { background: linear-gradient(135deg, rgba(200,169,106,0.06), transparent); overflow-x: hidden; }
   #nlg-invest-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+  #nlg-invest-inner > div { min-width: 0; }
   #nlg-invest-out { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   #nlg-invest-out .nlg-card { padding: 24px; text-align: center; }
   #nlg-invest-out .nlg-card span { font-size: 12px; color: rgba(216,220,227,0.6); text-transform: uppercase; letter-spacing: 0.06em; }
