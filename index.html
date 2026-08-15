@@ -183,7 +183,7 @@
   #nlg-root .nlg-project-body .nlg-btn { width: 100%; margin-top: 8px; }
 
   /* ---------- KPR CALCULATOR ---------- */
-  #nlg-kpr { background: var(--surface); border-radius: var(--radius); margin: 0 32px; padding: 64px; overflow-x: hidden; }
+  #nlg-kpr { background: var(--surface); border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 60px -30px rgba(0,0,0,0.6); margin: 0 32px; padding: 64px; overflow-x: hidden; }
   #nlg-kpr-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
   /* Classic CSS Grid trap: grid items default to min-width:auto, which stops a
      1fr column from ever shrinking below its content's intrinsic width (a long
@@ -303,7 +303,9 @@
     box-shadow: 0 10px 30px -6px rgba(0,0,0,0.5);
     text-decoration: none; font-size: 28px;
     animation: nlg-wa-pulse 2.4s infinite;
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
   }
+  #nlg-wa-float.nlg-wa-dim { opacity: 0.4; transform: scale(0.88); animation: none; }
   @keyframes nlg-wa-pulse { 0%,100% { box-shadow: 0 10px 30px -6px rgba(37,211,102,0.4); } 50% { box-shadow: 0 10px 30px -6px rgba(37,211,102,0.9); } }
 
   /* ---------- MOBILE STICKY CTA ---------- */
@@ -325,7 +327,9 @@
     position: relative;
     width: 100%; max-width: 920px;
     max-height: 88vh;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     background: var(--surface);
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: var(--radius);
@@ -335,19 +339,35 @@
     transition: transform 0.45s var(--ease), opacity 0.45s var(--ease);
   }
   #nlg-modal-backdrop.nlg-modal-open .nlg-modal { transform: translateY(0) scale(1); opacity: 1; }
+  /* Solid, non-scrolling topbar — the close button lives here, completely
+     outside the scrolling content flow below. This guarantees it can never
+     visually overlap or clip scrolled text, unlike a sticky button floating
+     over content. */
+  #nlg-root .nlg-modal-topbar {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 14px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  #nlg-root .nlg-modal-scroll {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
   #nlg-root .nlg-modal-close {
-    position: sticky; top: 20px; left: 100%;
-    width: 40px; height: 40px; border-radius: 50%;
-    background: rgba(11,18,32,0.75); backdrop-filter: blur(6px);
+    position: static;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.15);
-    color: var(--white); font-size: 18px; line-height: 1;
+    color: var(--white); font-size: 15px; line-height: 1;
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer; z-index: 5;
-    margin: 20px 20px -40px auto;
+    cursor: pointer;
     transition: background 0.3s, transform 0.3s, border-color 0.3s;
   }
   #nlg-root .nlg-modal-close:hover { background: rgba(200,169,106,0.9); color: var(--navy); transform: rotate(90deg); border-color: var(--gold); }
-  #nlg-root .nlg-modal-hero { height: 320px; border-radius: var(--radius) var(--radius) 0 0; overflow: hidden; position: relative; }
+  #nlg-root .nlg-modal-hero { height: 320px; overflow: hidden; position: relative; }
   #nlg-root .nlg-modal-hero img { width: 100%; height: 100%; object-fit: cover; }
   #nlg-root .nlg-modal-hero::after { content:''; position:absolute; inset:0; background: linear-gradient(180deg, rgba(11,18,32,0) 40%, var(--surface) 100%); }
   #nlg-root .nlg-modal-body { padding: 8px 44px 44px; }
@@ -449,7 +469,7 @@
     #nlg-timeline .nlg-tl-item:nth-child(odd) .nlg-tl-content,
     #nlg-timeline .nlg-tl-item:nth-child(even) .nlg-tl-content { grid-column: 2; text-align: left; }
     #nlg-timeline .nlg-tl-spacer { display: none; }
-    #nlg-kpr { margin: 0 20px; padding: 32px 24px; }
+    #nlg-kpr { margin: 0 20px; padding: 40px 28px; }
     #nlg-invest-out { grid-template-columns: 1fr; }
     #nlg-footer .nlg-foot-grid { grid-template-columns: 1fr; gap: 32px; }
 
@@ -489,7 +509,7 @@
       max-width: 100% !important;
       height: auto !important;
     }
-    /* Bottom sticky "Book Site Visit" bar intentionally disabled on mobile —
+    /* Bottom sticky "Jadwalkan Kunjungan" bar intentionally disabled on mobile —
        the floating WhatsApp button (#nlg-wa-float) is now the single primary
        mobile CTA to avoid competing floating elements. Re-enable by uncommenting
        the line below if a secondary bar is wanted again.
@@ -508,15 +528,15 @@
     <div class="nlg-wrap nlg-nav-inner">
       <div class="nlg-logo">NUSANTARA <span>LIVING</span></div>
       <ul>
-        <li><a class="nlg-navlink" href="#nlg-projects">Projects</a></li>
-        <li><a class="nlg-navlink" href="#nlg-kpr">KPR Calculator</a></li>
-        <li><a class="nlg-navlink" href="#nlg-timeline">Why Us</a></li>
-        <li><a class="nlg-navlink" href="#nlg-testi">Stories</a></li>
-        <li><a class="nlg-navlink" href="#nlg-faq">FAQ</a></li>
+        <li><a class="nlg-navlink" href="#nlg-projects">Proyek</a></li>
+        <li><a class="nlg-navlink" href="#nlg-kpr">Kalkulator KPR</a></li>
+        <li><a class="nlg-navlink" href="#nlg-timeline">Kenapa Kami</a></li>
+        <li><a class="nlg-navlink" href="#nlg-testi">Testimoni</a></li>
+        <li><a class="nlg-navlink" href="#nlg-faq">Tanya Jawab</a></li>
       </ul>
       <div class="nlg-nav-cta">
-        <a href="#nlg-projects" class="nlg-btn nlg-btn-ghost">Explore Projects</a>
-        <a href="https://wa.me/6281234567890?text=Hello%2C%20I%20would%20like%20to%20schedule%20a%20Private%20Site%20Visit" target="_blank" rel="noopener" class="nlg-btn nlg-btn-primary nlg-magnetic">Schedule a Private Site Visit</a>
+        <a href="#nlg-projects" class="nlg-btn nlg-btn-ghost">Lihat Semua Proyek</a>
+        <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20menjadwalkan%20Kunjungan%20Lokasi%20Pribadi" target="_blank" rel="noopener" class="nlg-btn nlg-btn-primary nlg-magnetic">Jadwalkan Kunjungan Lokasi Pribadi</a>
       </div>
       <button id="nlg-mobile-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
@@ -530,12 +550,12 @@
          Left empty on purpose so no placeholder 404 request fires until you provide a real file. -->
     <video autoplay muted loop playsinline style="display:none" id="nlg-hero-video" data-src=""></video>
     <div class="nlg-wrap nlg-hero-content">
-      <div class="nlg-eyebrow">Premium Living · Practical Investment</div>
-      <h1 class="nlg-reveal">Find a Home That <em>Grows</em> With Your Future.</h1>
-      <p class="nlg-sub nlg-reveal">Modern residences thoughtfully designed for families who value comfort, connectivity, and long-term investment — across Greater Jakarta.</p>
+      <div class="nlg-eyebrow">Hunian Premium · Investasi Praktis</div>
+      <h1 class="nlg-reveal">Temukan Hunian yang <em>Tumbuh</em> Bersama Masa Depan Anda.</h1>
+      <p class="nlg-sub nlg-reveal">Hunian modern yang dirancang khusus untuk keluarga yang mengutamakan kenyamanan, konektivitas, dan investasi jangka panjang — tersebar di seluruh Jabodetabek.</p>
       <div class="nlg-hero-btns nlg-reveal">
-        <a href="#nlg-projects" class="nlg-btn nlg-btn-ghost nlg-magnetic">Explore Projects</a>
-        <a href="https://wa.me/6281234567890?text=Hello%2C%20I%20would%20like%20to%20schedule%20a%20Private%20Site%20Visit" target="_blank" rel="noopener" class="nlg-btn nlg-btn-primary nlg-magnetic">Book Site Visit</a>
+        <a href="#nlg-projects" class="nlg-btn nlg-btn-ghost nlg-magnetic">Lihat Semua Proyek</a>
+        <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20menjadwalkan%20Kunjungan%20Lokasi%20Pribadi" target="_blank" rel="noopener" class="nlg-btn nlg-btn-primary nlg-magnetic">Jadwalkan Kunjungan</a>
       </div>
     </div>
     <div id="nlg-scroll-cue"></div>
@@ -546,19 +566,19 @@
     <div class="nlg-wrap nlg-stats-grid">
       <div class="nlg-reveal">
         <div class="nlg-stat-num" data-count="1200" data-suffix="+">0</div>
-        <div class="nlg-stat-label">Homes Delivered</div>
+        <div class="nlg-stat-label">Rumah Terbangun</div>
       </div>
       <div class="nlg-reveal">
-        <div class="nlg-stat-num" data-count="8" data-suffix=" Years">0</div>
-        <div class="nlg-stat-label">Development Experience</div>
+        <div class="nlg-stat-num" data-count="8" data-suffix=" Tahun">0</div>
+        <div class="nlg-stat-label">Pengalaman Pengembang</div>
       </div>
       <div class="nlg-reveal">
         <div class="nlg-stat-num" data-count="97" data-suffix="%">0</div>
-        <div class="nlg-stat-label">Customer Satisfaction</div>
+        <div class="nlg-stat-label">Kepuasan Pelanggan</div>
       </div>
       <div class="nlg-reveal">
-        <div class="nlg-stat-num" data-count="5" data-suffix=" Projects">0</div>
-        <div class="nlg-stat-label">Across Greater Jakarta</div>
+        <div class="nlg-stat-num" data-count="5" data-suffix=" Proyek">0</div>
+        <div class="nlg-stat-label">Tersebar di Jabodetabek</div>
       </div>
     </div>
   </section>
@@ -567,16 +587,16 @@
   <section id="nlg-projects">
     <div class="nlg-wrap">
       <div class="nlg-section-head nlg-reveal">
-        <div class="nlg-eyebrow">Featured Developments</div>
-        <h2>Five projects. One standard of living.</h2>
-        <p>Every Nusantara Living development is built around the same principle: modern tropical design, honest pricing, and a location that works for your life.</p>
+        <div class="nlg-eyebrow">Proyek Unggulan</div>
+        <h2>Lima proyek. Satu standar hidup.</h2>
+        <p>Setiap pengembangan Nusantara Living dibangun dengan prinsip yang sama: desain tropis modern, harga transparan, dan lokasi yang mendukung kehidupan Anda.</p>
       </div>
       <div class="nlg-project-grid">
 
         <div class="nlg-card nlg-project-card nlg-reveal">
           <div class="nlg-project-img">
-            <span class="nlg-project-tag">3 Units Left</span>
-            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Cluster Anara — modern tropical home exterior">
+            <span class="nlg-project-tag">Sisa 3 Unit</span>
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Cluster Anara — eksterior rumah tropis modern">
           </div>
           <div class="nlg-project-body">
             <h3>Cluster Anara</h3>
@@ -585,17 +605,17 @@
               <span>🛏 3 BR</span><span>🛁 2 BA</span><span>📐 120/90 m²</span>
             </div>
             <div class="nlg-project-price">
-              <div><span>Starting Price</span><strong>Rp 2.4 M</strong></div>
-              <div><span>Monthly KPR</span><strong>Rp 14.2 jt</strong></div>
+              <div><span>Harga Mulai</span><strong>Rp 2.4 M</strong></div>
+              <div><span>Cicilan KPR/bulan</span><strong>Rp 14.2 jt</strong></div>
             </div>
-            <button type="button" class="nlg-btn nlg-btn-ghost nlg-magnetic nlg-view-project" data-project="anara">View Project</button>
+            <button type="button" class="nlg-btn nlg-btn-ghost nlg-magnetic nlg-view-project" data-project="anara">Lihat Proyek</button>
           </div>
         </div>
 
         <div class="nlg-card nlg-project-card nlg-reveal">
           <div class="nlg-project-img">
-            <span class="nlg-project-tag">New Launch</span>
-            <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80" alt="Kanaya Residence — contemporary house facade">
+            <span class="nlg-project-tag">Baru Diluncurkan</span>
+            <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80" alt="Kanaya Residence — fasad rumah kontemporer">
           </div>
           <div class="nlg-project-body">
             <h3>Kanaya Residence</h3>
@@ -604,17 +624,17 @@
               <span>🛏 4 BR</span><span>🛁 3 BA</span><span>📐 150/120 m²</span>
             </div>
             <div class="nlg-project-price">
-              <div><span>Starting Price</span><strong>Rp 3.8 M</strong></div>
-              <div><span>Monthly KPR</span><strong>Rp 22.1 jt</strong></div>
+              <div><span>Harga Mulai</span><strong>Rp 3.8 M</strong></div>
+              <div><span>Cicilan KPR/bulan</span><strong>Rp 22.1 jt</strong></div>
             </div>
-            <button type="button" class="nlg-btn nlg-btn-ghost nlg-magnetic nlg-view-project" data-project="kanaya">View Project</button>
+            <button type="button" class="nlg-btn nlg-btn-ghost nlg-magnetic nlg-view-project" data-project="kanaya">Lihat Proyek</button>
           </div>
         </div>
 
         <div class="nlg-card nlg-project-card nlg-reveal">
           <div class="nlg-project-img">
-            <span class="nlg-project-tag">Ready to Move</span>
-            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80" alt="Serena Park — two-storey tropical residence">
+            <span class="nlg-project-tag">Siap Huni</span>
+            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80" alt="Serena Park — hunian tropis dua lantai">
           </div>
           <div class="nlg-project-body">
             <h3>Serena Park</h3>
@@ -623,17 +643,17 @@
               <span>🛏 2 BR</span><span>🛁 2 BA</span><span>📐 90/70 m²</span>
             </div>
             <div class="nlg-project-price">
-              <div><span>Starting Price</span><strong>Rp 1.6 M</strong></div>
-              <div><span>Monthly KPR</span><strong>Rp 9.4 jt</strong></div>
+              <div><span>Harga Mulai</span><strong>Rp 1.6 M</strong></div>
+              <div><span>Cicilan KPR/bulan</span><strong>Rp 9.4 jt</strong></div>
             </div>
-            <button type="button" class="nlg-btn nlg-btn-ghost nlg-magnetic nlg-view-project" data-project="serena">View Project</button>
+            <button type="button" class="nlg-btn nlg-btn-ghost nlg-magnetic nlg-view-project" data-project="serena">Lihat Proyek</button>
           </div>
         </div>
 
         <div class="nlg-card nlg-project-card nlg-reveal">
           <div class="nlg-project-img">
-            <span class="nlg-project-tag">Corner Unit Left</span>
-            <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80" alt="Wisata Hijau — family townhouse exterior">
+            <span class="nlg-project-tag">Sisa Unit Hook</span>
+            <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80" alt="Wisata Hijau — eksterior rumah keluarga">
           </div>
           <div class="nlg-project-body">
             <h3>Wisata Hijau</h3>
@@ -642,17 +662,17 @@
               <span>🛏 3 BR</span><span>🛁 2 BA</span><span>📐 105/85 m²</span>
             </div>
             <div class="nlg-project-price">
-              <div><span>Starting Price</span><strong>Rp 2.1 M</strong></div>
-              <div><span>Monthly KPR</span><strong>Rp 12.5 jt</strong></div>
+              <div><span>Harga Mulai</span><strong>Rp 2.1 M</strong></div>
+              <div><span>Cicilan KPR/bulan</span><strong>Rp 12.5 jt</strong></div>
             </div>
-            <button type="button" class="nlg-btn nlg-btn-ghost nlg-magnetic nlg-view-project" data-project="wisata">View Project</button>
+            <button type="button" class="nlg-btn nlg-btn-ghost nlg-magnetic nlg-view-project" data-project="wisata">Lihat Proyek</button>
           </div>
         </div>
 
         <div class="nlg-card nlg-project-card nlg-reveal">
           <div class="nlg-project-img">
-            <span class="nlg-project-tag">Premium Enclave</span>
-            <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80" alt="Cassia Heights — premium two-storey home exterior">
+            <span class="nlg-project-tag">Kawasan Eksklusif</span>
+            <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80" alt="Cassia Heights — eksterior rumah premium dua lantai">
           </div>
           <div class="nlg-project-body">
             <h3>Cassia Heights</h3>
@@ -661,10 +681,10 @@
               <span>🛏 5 BR</span><span>🛁 4 BA</span><span>📐 200/180 m²</span>
             </div>
             <div class="nlg-project-price">
-              <div><span>Starting Price</span><strong>Rp 6.2 M</strong></div>
-              <div><span>Monthly KPR</span><strong>Rp 36.4 jt</strong></div>
+              <div><span>Harga Mulai</span><strong>Rp 6.2 M</strong></div>
+              <div><span>Cicilan KPR/bulan</span><strong>Rp 36.4 jt</strong></div>
             </div>
-            <button type="button" class="nlg-btn nlg-btn-ghost nlg-magnetic nlg-view-project" data-project="cassia">View Project</button>
+            <button type="button" class="nlg-btn nlg-btn-ghost nlg-magnetic nlg-view-project" data-project="cassia">Lihat Proyek</button>
           </div>
         </div>
 
@@ -676,42 +696,42 @@
   <section id="nlg-kpr">
     <div id="nlg-kpr-inner">
       <div>
-        <div class="nlg-eyebrow">Mortgage Made Simple</div>
-        <h2 style="font-size:clamp(28px,3.2vw,38px); margin-bottom:16px;">Know your number before you visit.</h2>
-        <p style="color:rgba(216,220,227,0.75); margin-bottom:36px;">No hidden costs, no surprises. Adjust the sliders to see exactly what home ownership looks like on your budget.</p>
+        <div class="nlg-eyebrow">KPR Jadi Mudah</div>
+        <h2 style="font-size:clamp(28px,3.2vw,38px); margin-bottom:16px;">Ketahui Angkanya Sebelum Anda Berkunjung.</h2>
+        <p style="color:rgba(216,220,227,0.75); margin-bottom:36px;">Tanpa biaya tersembunyi, tanpa kejutan. Geser slider untuk melihat gambaran kepemilikan rumah sesuai budget Anda.</p>
 
         <div class="nlg-field">
-          <label>Property Price <b id="nlg-kpr-price-val">Rp 2.400.000.000</b></label>
+          <label>Harga Properti <b id="nlg-kpr-price-val">Rp 2.400.000.000</b></label>
           <input type="range" id="nlg-kpr-price" min="500000000" max="10000000000" step="50000000" value="2400000000">
         </div>
         <div class="nlg-field">
-          <label>Down Payment <b id="nlg-kpr-dp-val">20%</b></label>
+          <label>Uang Muka (DP) <b id="nlg-kpr-dp-val">20%</b></label>
           <input type="range" id="nlg-kpr-dp" min="10" max="50" step="1" value="20">
         </div>
         <div class="nlg-field">
-          <label>Interest Rate <b id="nlg-kpr-rate-val">6.5%</b></label>
+          <label>Suku Bunga <b id="nlg-kpr-rate-val">6.5%</b></label>
           <input type="range" id="nlg-kpr-rate" min="4" max="12" step="0.1" value="6.5">
         </div>
         <div class="nlg-field">
-          <label>Loan Period <b id="nlg-kpr-term-val">15 years</b></label>
+          <label>Jangka Waktu Kredit <b id="nlg-kpr-term-val">15 tahun</b></label>
           <input type="range" id="nlg-kpr-term" min="5" max="25" step="1" value="15">
         </div>
         <div class="nlg-field">
-          <label>Monthly Income</label>
-          <input type="number" id="nlg-kpr-income" placeholder="e.g. 25000000" value="25000000">
+          <label>Penghasilan per Bulan</label>
+          <input type="number" id="nlg-kpr-income" placeholder="contoh: 25000000" value="25000000">
         </div>
       </div>
 
       <div id="nlg-kpr-output">
         <div class="nlg-out-main">
-          <span>Estimated Monthly Installment</span>
+          <span>Estimasi Cicilan per Bulan</span>
           <strong id="nlg-out-installment">Rp 0</strong>
         </div>
         <canvas id="nlg-kpr-chart"></canvas>
-        <div class="nlg-out-row"><span>Loan Amount</span><span id="nlg-out-loan">—</span></div>
-        <div class="nlg-out-row"><span>Minimum Recommended Income</span><span id="nlg-out-min-income">—</span></div>
-        <div class="nlg-out-row"><span>Debt-to-Income Ratio</span><span id="nlg-out-dti">—</span></div>
-        <a href="https://wa.me/6281234567890?text=Hello%2C%20I%20would%20like%20to%20consult%20a%20mortgage%20specialist%20about%20my%20KPR%20options" target="_blank" rel="noopener" class="nlg-btn nlg-btn-gold nlg-magnetic" style="width:100%; margin-top:24px;">Consult Mortgage Specialist</a>
+        <div class="nlg-out-row"><span>Jumlah Pinjaman</span><span id="nlg-out-loan">—</span></div>
+        <div class="nlg-out-row"><span>Penghasilan Minimum yang Disarankan</span><span id="nlg-out-min-income">—</span></div>
+        <div class="nlg-out-row"><span>Rasio Cicilan terhadap Penghasilan</span><span id="nlg-out-dti">—</span></div>
+        <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20konsultasi%20dengan%20spesialis%20KPR%20soal%20opsi%20KPR%20saya" target="_blank" rel="noopener" class="nlg-btn nlg-btn-gold nlg-magnetic" style="width:100%; margin-top:24px;">Konsultasi dengan Spesialis KPR</a>
       </div>
     </div>
   </section>
@@ -720,35 +740,35 @@
   <section id="nlg-timeline">
     <div class="nlg-wrap">
       <div class="nlg-section-head nlg-reveal">
-        <div class="nlg-eyebrow">Why Choose Us</div>
-        <h2>From land to handover, every step is visible.</h2>
-        <p>The fear of an unfinished project is real in Indonesia. Here's exactly how we build — and how you can verify progress at every stage.</p>
+        <div class="nlg-eyebrow">Kenapa Memilih Kami</div>
+        <h2>Dari akuisisi lahan hingga serah terima, setiap langkah terlihat jelas.</h2>
+        <p>Ketakutan akan proyek mangkrak itu nyata di Indonesia. Ini persis bagaimana kami membangun — dan bagaimana Anda bisa memverifikasi progresnya di setiap tahap.</p>
       </div>
       <div style="position:relative;">
         <div class="nlg-tl-line"></div>
 
         <div class="nlg-tl-item nlg-reveal">
-          <div class="nlg-tl-content"><div class="nlg-tl-num">STAGE 01</div><h4>Land Acquisition</h4><p>Legal due diligence, clean certificates (SHM/HGB), zoning verification before a single brick is laid.</p></div>
+          <div class="nlg-tl-content"><div class="nlg-tl-num">TAHAP 01</div><h4>Akuisisi Lahan</h4><p>Uji tuntas legal, sertifikat bersih (SHM/HGB), dan verifikasi zonasi sebelum satu bata pun dipasang.</p></div>
           <div class="nlg-tl-dot"></div>
           <div class="nlg-tl-spacer"></div>
         </div>
         <div class="nlg-tl-item nlg-reveal">
           <div class="nlg-tl-spacer"></div>
           <div class="nlg-tl-dot"></div>
-          <div class="nlg-tl-content"><div class="nlg-tl-num">STAGE 02</div><h4>Construction</h4><p>Monthly drone-documented progress shared directly with buyers — no guessing, no waiting.</p></div>
+          <div class="nlg-tl-content"><div class="nlg-tl-num">TAHAP 02</div><h4>Konstruksi</h4><p>Progres terdokumentasi drone setiap bulan, dibagikan langsung ke pembeli — tanpa menerka-nerka, tanpa menunggu tanpa kabar.</p></div>
         </div>
         <div class="nlg-tl-item nlg-reveal">
-          <div class="nlg-tl-content"><div class="nlg-tl-num">STAGE 03</div><h4>Quality Inspection</h4><p>Independent third-party inspection against a 120-point checklist before handover is scheduled.</p></div>
+          <div class="nlg-tl-content"><div class="nlg-tl-num">TAHAP 03</div><h4>Inspeksi Kualitas</h4><p>Inspeksi independen oleh pihak ketiga dengan 120 poin pemeriksaan sebelum jadwal serah terima ditetapkan.</p></div>
           <div class="nlg-tl-dot"></div>
           <div class="nlg-tl-spacer"></div>
         </div>
         <div class="nlg-tl-item nlg-reveal">
           <div class="nlg-tl-spacer"></div>
           <div class="nlg-tl-dot"></div>
-          <div class="nlg-tl-content"><div class="nlg-tl-num">STAGE 04</div><h4>Handover</h4><p>Guided walkthrough, full documentation package, and keys — on the date promised in your contract.</p></div>
+          <div class="nlg-tl-content"><div class="nlg-tl-num">TAHAP 04</div><h4>Serah Terima</h4><p>Pendampingan langsung, paket dokumentasi lengkap, dan kunci rumah — tepat pada tanggal yang dijanjikan di kontrak.</p></div>
         </div>
         <div class="nlg-tl-item nlg-reveal">
-          <div class="nlg-tl-content"><div class="nlg-tl-num">STAGE 05</div><h4>After-Sales Support</h4><p>Dedicated advisor and 12-month structural warranty, with a direct line for anything that comes up.</p></div>
+          <div class="nlg-tl-content"><div class="nlg-tl-num">TAHAP 05</div><h4>Layanan Purna Jual</h4><p>Advisor khusus dan garansi struktur 12 bulan, dengan jalur komunikasi langsung untuk apa pun yang muncul.</p></div>
           <div class="nlg-tl-dot"></div>
           <div class="nlg-tl-spacer"></div>
         </div>
@@ -761,41 +781,41 @@
   <section id="nlg-facilities">
     <div class="nlg-wrap">
       <div class="nlg-section-head nlg-reveal">
-        <div class="nlg-eyebrow">Lifestyle & Connectivity</div>
-        <h2>Everything nearby, nothing compromised.</h2>
+        <div class="nlg-eyebrow">Gaya Hidup & Konektivitas</div>
+        <h2>Semua dekat, tak ada yang dikompromikan.</h2>
       </div>
       <div class="nlg-fac-layout nlg-reveal">
         <div class="nlg-fac-list">
-          <div class="nlg-fac-item nlg-active" data-fac="Hospital" data-dist="4 minutes">
+          <div class="nlg-fac-item nlg-active" data-fac="Hospital" data-dist="4 menit">
             <div class="nlg-fac-icon">🏥</div>
-            <div><strong>Hospital</strong><small>Eka Hospital BSD — 4 minutes</small></div>
+            <div><strong>Rumah Sakit</strong><small>RS Eka BSD — 4 menit</small></div>
           </div>
-          <div class="nlg-fac-item" data-fac="Schools" data-dist="6 minutes">
+          <div class="nlg-fac-item" data-fac="Schools" data-dist="6 menit">
             <div class="nlg-fac-icon">🎓</div>
-            <div><strong>International Schools</strong><small>6 minutes</small></div>
+            <div><strong>Sekolah Internasional</strong><small>6 menit</small></div>
           </div>
-          <div class="nlg-fac-item" data-fac="Mall" data-dist="8 minutes">
+          <div class="nlg-fac-item" data-fac="Mall" data-dist="8 menit">
             <div class="nlg-fac-icon">🛍</div>
-            <div><strong>Shopping Mall</strong><small>AEON / QBig — 8 minutes</small></div>
+            <div><strong>Pusat Perbelanjaan</strong><small>AEON / QBig — 8 menit</small></div>
           </div>
-          <div class="nlg-fac-item" data-fac="Airport" data-dist="45 minutes">
+          <div class="nlg-fac-item" data-fac="Airport" data-dist="45 menit">
             <div class="nlg-fac-icon">✈️</div>
-            <div><strong>Airport</strong><small>Soekarno-Hatta — 45 minutes</small></div>
+            <div><strong>Bandara</strong><small>Soekarno-Hatta — 45 menit</small></div>
           </div>
-          <div class="nlg-fac-item" data-fac="Toll Road" data-dist="2 minutes">
+          <div class="nlg-fac-item" data-fac="Toll Road" data-dist="2 menit">
             <div class="nlg-fac-icon">🛣</div>
-            <div><strong>Toll Road Access</strong><small>Jakarta-Serpong — 2 minutes</small></div>
+            <div><strong>Akses Tol</strong><small>Jakarta-Serpong — 2 menit</small></div>
           </div>
-          <div class="nlg-fac-item" data-fac="MRT" data-dist="12 minutes">
+          <div class="nlg-fac-item" data-fac="MRT" data-dist="12 menit">
             <div class="nlg-fac-icon">🚆</div>
-            <div><strong>MRT / Commuter Line</strong><small>12 minutes</small></div>
+            <div><strong>MRT / KRL</strong><small>12 menit</small></div>
           </div>
         </div>
         <div id="nlg-fac-map">
           <div id="nlg-map-wrapper">
             <!-- Info fasilitas yang sedang aktif -->
             <div class="nlg-map-active-info">
-              <b id="nlg-fac-selected">Hospital — 4 minutes</b>
+              <b id="nlg-fac-selected">Rumah Sakit — 4 menit</b>
             </div>
             <!-- Google Maps mount point -->
             <div id="nlg-custom-map"></div>
@@ -816,6 +836,16 @@ var globalMarkers = {};
 // Single source of truth for "select a facility" — used by both the sidebar
 // list clicks and the map marker clicks below, so there is exactly one place
 // that updates the active class, the label, and pans/zooms the map.
+// Internal data-fac keys stay in English (they're just IDs matching the
+// lokasiFasilitas object below) — this map translates them for display only.
+var facLabels = {
+  'Hospital': 'Rumah Sakit',
+  'Schools': 'Sekolah Internasional',
+  'Mall': 'Pusat Perbelanjaan',
+  'Airport': 'Bandara',
+  'Toll Road': 'Akses Tol',
+  'MRT': 'MRT / KRL'
+};
 function setActiveFacility(key) {
   document.querySelectorAll('.nlg-fac-item').forEach(function (el) {
     el.classList.toggle('nlg-active', el.dataset.fac === key);
@@ -834,7 +864,10 @@ function setActiveFacility(key) {
     // label from the DOM attributes so the sidebar stays responsive even
     // before the Google Maps API has finished loading.
     var domItem = document.querySelector('.nlg-fac-item[data-fac="' + key + '"]');
-    if (label && domItem) label.textContent = domItem.dataset.fac + ' — ' + domItem.dataset.dist;
+    if (label && domItem) {
+      var displayName = facLabels[domItem.dataset.fac] || domItem.dataset.fac;
+      label.textContent = displayName + ' — ' + domItem.dataset.dist;
+    }
   }
 }
 
@@ -848,12 +881,12 @@ function initNlgMap() {
   // Schools" while the HTML used short ones like "Schools" — that mismatch
   // silently broke panTo() for 4 of the 6 items). Keys are now short to match.
   var lokasiFasilitas = {
-    'Hospital': { name: 'Eka Hospital BSD — 4 minutes', lat: -2.2120, lng: 113.9180 },
-    'Schools': { name: 'International School — 6 minutes', lat: -2.2080, lng: 113.9200 },
-    'Mall': { name: 'AEON / QBig — 8 minutes', lat: -2.2050, lng: 113.9120 },
-    'Airport': { name: 'Soekarno-Hatta — 45 minutes', lat: -2.1900, lng: 113.9000 },
-    'Toll Road': { name: 'Jakarta-Serpong — 2 minutes', lat: -2.2070, lng: 113.9140 },
-    'MRT': { name: 'MRT Station — 12 minutes', lat: -2.2150, lng: 113.9220 }
+    'Hospital': { name: 'RS Eka BSD — 4 menit', lat: -2.2120, lng: 113.9180 },
+    'Schools': { name: 'Sekolah Internasional — 6 menit', lat: -2.2080, lng: 113.9200 },
+    'Mall': { name: 'AEON / QBig — 8 menit', lat: -2.2050, lng: 113.9120 },
+    'Airport': { name: 'Bandara Soekarno-Hatta — 45 menit', lat: -2.1900, lng: 113.9000 },
+    'Toll Road': { name: 'Tol Jakarta-Serpong — 2 menit', lat: -2.2070, lng: 113.9140 },
+    'MRT': { name: 'Stasiun MRT — 12 menit', lat: -2.2150, lng: 113.9220 }
   };
 
   // Theme Dark Mode Format Array JSON Valid
@@ -932,24 +965,24 @@ window.initNlgMap = initNlgMap;
   <section id="nlg-invest">
     <div class="nlg-wrap" id="nlg-invest-inner">
       <div>
-        <div class="nlg-eyebrow">Practical Investment</div>
-        <h2 style="font-size:clamp(28px,3.2vw,38px); margin-bottom:16px;">Model your return before you commit.</h2>
-        <p style="color:rgba(216,220,227,0.75); margin-bottom:36px;">Property in BSD City has historically appreciated steadily. Run your own numbers below — figures are illustrative estimates, not guarantees.</p>
+        <div class="nlg-eyebrow">Investasi Praktis</div>
+        <h2 style="font-size:clamp(28px,3.2vw,38px); margin-bottom:16px;">Hitung Potensi Return Sebelum Anda Memutuskan.</h2>
+        <p style="color:rgba(216,220,227,0.75); margin-bottom:36px;">Harga properti di BSD City secara historis naik secara stabil. Coba hitung sendiri di bawah ini — angka bersifat estimasi ilustratif, bukan jaminan.</p>
 
         <div class="nlg-field">
-          <label>Purchase Price <b id="nlg-inv-price-val">Rp 2.400.000.000</b></label>
+          <label>Harga Beli <b id="nlg-inv-price-val">Rp 2.400.000.000</b></label>
           <input type="range" id="nlg-inv-price" min="500000000" max="10000000000" step="50000000" value="2400000000">
         </div>
         <div class="nlg-field">
-          <label>Estimated Annual Appreciation <b id="nlg-inv-appr-val">8%</b></label>
+          <label>Estimasi Kenaikan Harga per Tahun <b id="nlg-inv-appr-val">8%</b></label>
           <input type="range" id="nlg-inv-appr" min="2" max="15" step="0.5" value="8">
         </div>
         <div class="nlg-field">
-          <label>Estimated Annual Rental Income <b id="nlg-inv-rent-val">Rp 60.000.000</b></label>
+          <label>Estimasi Pendapatan Sewa per Tahun <b id="nlg-inv-rent-val">Rp 60.000.000</b></label>
           <input type="range" id="nlg-inv-rent" min="0" max="300000000" step="5000000" value="60000000">
         </div>
         <div class="nlg-field">
-          <label>Holding Period <b id="nlg-inv-years-val">5 years</b></label>
+          <label>Jangka Waktu Investasi <b id="nlg-inv-years-val">5 tahun</b></label>
           <input type="range" id="nlg-inv-years" min="1" max="20" step="1" value="5">
         </div>
       </div>
@@ -957,11 +990,11 @@ window.initNlgMap = initNlgMap;
       <div>
         <div id="nlg-invest-out">
           <div class="nlg-card"><span>Total ROI</span><strong id="nlg-inv-roi">0%</strong></div>
-          <div class="nlg-card"><span>Capital Gain</span><strong id="nlg-inv-gain">Rp 0</strong></div>
-          <div class="nlg-card"><span>Rental Yield</span><strong id="nlg-inv-yield">0%</strong></div>
-          <div class="nlg-card"><span>Total Profit</span><strong id="nlg-inv-profit">Rp 0</strong></div>
+          <div class="nlg-card"><span>Kenaikan Nilai Aset</span><strong id="nlg-inv-gain">Rp 0</strong></div>
+          <div class="nlg-card"><span>Imbal Hasil Sewa</span><strong id="nlg-inv-yield">0%</strong></div>
+          <div class="nlg-card"><span>Total Keuntungan</span><strong id="nlg-inv-profit">Rp 0</strong></div>
         </div>
-        <a href="https://wa.me/6281234567890?text=Hello%2C%20I%20would%20like%20to%20schedule%20a%20Private%20Site%20Visit" target="_blank" rel="noopener" class="nlg-btn nlg-btn-primary nlg-magnetic" style="width:100%; margin-top:20px;">Schedule a Private Site Visit</a>
+        <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20menjadwalkan%20Kunjungan%20Lokasi%20Pribadi" target="_blank" rel="noopener" class="nlg-btn nlg-btn-primary nlg-magnetic" style="width:100%; margin-top:20px;">Jadwalkan Kunjungan Lokasi Pribadi</a>
       </div>
     </div>
   </section>
@@ -970,23 +1003,23 @@ window.initNlgMap = initNlgMap;
   <section id="nlg-testi">
     <div class="nlg-wrap">
       <div class="nlg-section-head nlg-reveal">
-        <div class="nlg-eyebrow">Customer Stories</div>
-        <h2>Real families. Real handovers.</h2>
+        <div class="nlg-eyebrow">Testimoni Pelanggan</div>
+        <h2>Keluarga Nyata. Serah Terima Nyata.</h2>
       </div>
       <div class="nlg-testi-grid">
         <div class="nlg-card nlg-testi-card nlg-reveal">
           <div class="nlg-testi-video"><div class="nlg-play-btn">▶</div></div>
-          <p class="nlg-quote">"The transparency during construction is what sold us. We saw drone updates every single month."</p>
-          <div class="nlg-testi-who"><div class="nlg-testi-avatar">R</div><div><strong>Rangga & Dinda</strong><small>Cluster Anara, first-time buyers</small></div></div>
+          <p class="nlg-quote">"Transparansi selama proses pembangunan itu yang bikin kami yakin. Kami lihat update progres dari drone setiap bulan."</p>
+          <div class="nlg-testi-who"><div class="nlg-testi-avatar">R</div><div><strong>Rangga & Dinda</strong><small>Cluster Anara, pembeli rumah pertama</small></div></div>
         </div>
         <div class="nlg-card nlg-testi-card nlg-reveal">
           <div class="nlg-testi-video"><div class="nlg-play-btn">▶</div></div>
-          <p class="nlg-quote">"As a doctor with limited free time, the KPR calculator and advisor team saved us weeks of back-and-forth."</p>
-          <div class="nlg-testi-who"><div class="nlg-testi-avatar">S</div><div><strong>dr. Sarah Wijaya</strong><small>Kanaya Residence, upgrade home</small></div></div>
+          <p class="nlg-quote">"Sebagai dokter dengan waktu luang terbatas, kalkulator KPR dan tim advisornya menghemat waktu kami berminggu-minggu bolak-balik."</p>
+          <div class="nlg-testi-who"><div class="nlg-testi-avatar">S</div><div><strong>dr. Sarah Wijaya</strong><small>Kanaya Residence, upgrade hunian</small></div></div>
         </div>
         <div class="nlg-card nlg-testi-card nlg-reveal">
           <div class="nlg-testi-video"><div class="nlg-play-btn">▶</div></div>
-          <p class="nlg-quote">"We bought as an investment. Two years in, the rental yield already beats our savings account by far."</p>
+          <p class="nlg-quote">"Kami beli sebagai investasi. Dua tahun berjalan, hasil sewanya sudah jauh mengalahkan bunga tabungan kami."</p>
           <div class="nlg-testi-who"><div class="nlg-testi-avatar">A</div><div><strong>Andre Halim</strong><small>Serena Park, investor</small></div></div>
         </div>
       </div>
@@ -997,15 +1030,15 @@ window.initNlgMap = initNlgMap;
   <section id="nlg-process">
     <div class="nlg-wrap">
       <div class="nlg-section-head nlg-reveal">
-        <div class="nlg-eyebrow">How It Works</div>
-        <h2>Five steps from browsing to keys in hand.</h2>
+        <div class="nlg-eyebrow">Cara Kerjanya</div>
+        <h2>Lima langkah dari mencari rumah sampai kunci di tangan.</h2>
       </div>
       <div class="nlg-process-grid">
-        <div class="nlg-proc-step nlg-reveal"><div class="nlg-proc-num">1</div><h4>Choose Property</h4><p>Browse projects and shortlist your match.</p></div>
-        <div class="nlg-proc-step nlg-reveal"><div class="nlg-proc-num">2</div><h4>Consultation</h4><p>Speak with an advisor about budget and KPR.</p></div>
-        <div class="nlg-proc-step nlg-reveal"><div class="nlg-proc-num">3</div><h4>Site Visit</h4><p>Walk the show unit and the actual location.</p></div>
-        <div class="nlg-proc-step nlg-reveal"><div class="nlg-proc-num">4</div><h4>KPR Approval</h4><p>We coordinate directly with partner banks.</p></div>
-        <div class="nlg-proc-step nlg-reveal"><div class="nlg-proc-num">5</div><h4>Handover</h4><p>Final walkthrough and keys, on schedule.</p></div>
+        <div class="nlg-proc-step nlg-reveal"><div class="nlg-proc-num">1</div><h4>Pilih Properti</h4><p>Jelajahi proyek dan pilih yang paling cocok.</p></div>
+        <div class="nlg-proc-step nlg-reveal"><div class="nlg-proc-num">2</div><h4>Konsultasi</h4><p>Diskusi dengan advisor soal budget dan KPR.</p></div>
+        <div class="nlg-proc-step nlg-reveal"><div class="nlg-proc-num">3</div><h4>Kunjungan Lokasi</h4><p>Lihat langsung unit contoh dan lokasi sebenarnya.</p></div>
+        <div class="nlg-proc-step nlg-reveal"><div class="nlg-proc-num">4</div><h4>Persetujuan KPR</h4><p>Kami koordinasi langsung dengan bank rekanan.</p></div>
+        <div class="nlg-proc-step nlg-reveal"><div class="nlg-proc-num">5</div><h4>Serah Terima</h4><p>Pengecekan akhir dan kunci rumah, sesuai jadwal.</p></div>
       </div>
     </div>
   </section>
@@ -1014,29 +1047,29 @@ window.initNlgMap = initNlgMap;
   <section id="nlg-faq">
     <div class="nlg-wrap">
       <div class="nlg-section-head nlg-reveal">
-        <div class="nlg-eyebrow">Frequently Asked</div>
-        <h2>Straight answers to the questions that matter most.</h2>
+        <div class="nlg-eyebrow">Pertanyaan Umum</div>
+        <h2>Jawaban jelas untuk pertanyaan yang paling penting.</h2>
       </div>
       <div id="nlg-faq-list">
         <div class="nlg-faq-item nlg-reveal">
-          <div class="nlg-faq-q">Am I eligible for KPR even if I'm an entrepreneur without a fixed salary slip? <span class="nlg-plus">+</span></div>
-          <div class="nlg-faq-a"><p>Yes. Our partner banks accept alternative income verification — business bank statements, tax returns (NPWP/SPT), and invoices — for entrepreneurs and freelancers. Our mortgage specialist reviews your specific documents before you commit to anything.</p></div>
+          <div class="nlg-faq-q">Apakah saya tetap bisa mengajukan KPR meski wiraswasta tanpa slip gaji tetap? <span class="nlg-plus">+</span></div>
+          <div class="nlg-faq-a"><p>Bisa. Bank rekanan kami menerima verifikasi penghasilan alternatif — mutasi rekening usaha, laporan pajak (NPWP/SPT), dan faktur — untuk wiraswasta dan freelancer. Spesialis KPR kami akan mengecek dokumen Anda lebih dulu sebelum ada komitmen apa pun.</p></div>
         </div>
         <div class="nlg-faq-item nlg-reveal">
-          <div class="nlg-faq-q">Are there any hidden costs beyond the listed price? <span class="nlg-plus">+</span></div>
-          <div class="nlg-faq-a"><p>No. Every quote includes a full cost breakdown — BPHTB, notary fees, and administration — before you sign anything. What you see in your consultation is what you pay.</p></div>
+          <div class="nlg-faq-q">Apakah ada biaya tersembunyi di luar harga yang tercantum? <span class="nlg-plus">+</span></div>
+          <div class="nlg-faq-a"><p>Tidak ada. Setiap penawaran sudah mencakup rincian biaya lengkap — BPHTB, biaya notaris, dan administrasi — sebelum Anda tanda tangan apa pun. Apa yang Anda lihat saat konsultasi, itu juga yang Anda bayar.</p></div>
         </div>
         <div class="nlg-faq-item nlg-reveal">
-          <div class="nlg-faq-q">What happens if construction is delayed? <span class="nlg-plus">+</span></div>
-          <div class="nlg-faq-a"><p>Our contracts include a defined handover date with compensation clauses for delays. Monthly drone progress reports mean you can track construction yourself, not just take our word for it.</p></div>
+          <div class="nlg-faq-q">Bagaimana jika pembangunan mengalami keterlambatan? <span class="nlg-plus">+</span></div>
+          <div class="nlg-faq-a"><p>Kontrak kami mencantumkan tanggal serah terima yang pasti, lengkap dengan klausul kompensasi bila terjadi keterlambatan. Laporan progres drone bulanan berarti Anda bisa memantau sendiri pembangunannya, tidak hanya mengandalkan omongan kami.</p></div>
         </div>
         <div class="nlg-faq-item nlg-reveal">
-          <div class="nlg-faq-q">Can I visit a project without committing to anything? <span class="nlg-plus">+</span></div>
-          <div class="nlg-faq-a"><p>Absolutely — that's the entire point of a Private Site Visit. No pressure, no obligation. Bring your questions and walk the actual show unit and neighborhood.</p></div>
+          <div class="nlg-faq-q">Bisakah saya mengunjungi proyek tanpa harus komitmen apa pun? <span class="nlg-plus">+</span></div>
+          <div class="nlg-faq-a"><p>Tentu saja — itu memang tujuan dari Kunjungan Lokasi Pribadi. Tanpa tekanan, tanpa kewajiban. Bawa pertanyaan Anda dan lihat langsung unit contoh serta lingkungan sekitarnya.</p></div>
         </div>
         <div class="nlg-faq-item nlg-reveal">
-          <div class="nlg-faq-q">Do you help with bank negotiations for a better interest rate? <span class="nlg-plus">+</span></div>
-          <div class="nlg-faq-a"><p>Yes, we coordinate directly with our partner banks on your behalf and can often secure preferential rates that aren't available walking in independently.</p></div>
+          <div class="nlg-faq-q">Apakah Nusantara Living membantu negosiasi bunga KPR ke bank? <span class="nlg-plus">+</span></div>
+          <div class="nlg-faq-a"><p>Ya, kami berkoordinasi langsung dengan bank rekanan atas nama Anda, dan seringkali bisa mendapatkan suku bunga khusus yang tidak tersedia jika Anda mengajukan sendiri.</p></div>
         </div>
       </div>
     </div>
@@ -1045,10 +1078,10 @@ window.initNlgMap = initNlgMap;
   <!-- ============ FINAL CTA ============ -->
   <section id="nlg-book" style="background: radial-gradient(circle at 50% 0%, rgba(200,169,106,0.08), transparent 60%);">
     <div class="nlg-wrap" id="nlg-final-cta">
-      <div class="nlg-eyebrow" style="justify-content:center;">Limited Availability</div>
-      <h2 class="nlg-reveal">See it in person before you decide anything.</h2>
-      <p class="nlg-reveal">Bring your questions. Walk the actual show unit. Meet an advisor who'll give you honest numbers, not a sales script.</p>
-      <a href="https://wa.me/6281234567890?text=Hello%2C%20I%20would%20like%20to%20schedule%20a%20Private%20Site%20Visit" target="_blank" rel="noopener" class="nlg-btn nlg-btn-primary nlg-magnetic nlg-reveal" style="padding:20px 44px; font-size:16px;">Schedule a Private Site Visit</a>
+      <div class="nlg-eyebrow" style="justify-content:center;">Unit Terbatas</div>
+      <h2 class="nlg-reveal">Lihat Langsung Sebelum Anda Memutuskan.</h2>
+      <p class="nlg-reveal">Bawa semua pertanyaan Anda. Lihat langsung unit contohnya. Temui advisor yang memberi angka jujur, bukan sekadar naskah jualan.</p>
+      <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20menjadwalkan%20Kunjungan%20Lokasi%20Pribadi" target="_blank" rel="noopener" class="nlg-btn nlg-btn-primary nlg-magnetic nlg-reveal" style="padding:20px 44px; font-size:16px;">Jadwalkan Kunjungan Lokasi Pribadi</a>
     </div>
   </section>
 
@@ -1058,7 +1091,7 @@ window.initNlgMap = initNlgMap;
       <div class="nlg-foot-grid">
         <div>
           <div class="nlg-logo" style="margin-bottom:16px;">NUSANTARA <span>LIVING</span></div>
-          <p>Premium residences across Greater Jakarta, built on transparency from land acquisition to handover, since 2017.</p>
+          <p>Hunian premium di seluruh Jabodetabek, dibangun dengan transparansi dari akuisisi lahan hingga serah terima, sejak 2017.</p>
           <div class="nlg-social">
             <a href="#" aria-label="Instagram">IG</a>
             <a href="#" aria-label="Facebook">FB</a>
@@ -1066,72 +1099,76 @@ window.initNlgMap = initNlgMap;
           </div>
         </div>
         <div>
-          <h5>Projects</h5>
+          <h5>Proyek</h5>
           <ul><li><a href="#">Cluster Anara</a></li><li><a href="#">Kanaya Residence</a></li><li><a href="#">Serena Park</a></li></ul>
         </div>
         <div>
-          <h5>Company</h5>
-          <ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Privacy Policy</a></li></ul>
+          <h5>Perusahaan</h5>
+          <ul><li><a href="#">Tentang Kami</a></li><li><a href="#">Karier</a></li><li><a href="#">Kebijakan Privasi</a></li></ul>
         </div>
         <div>
-          <h5>Office</h5>
+          <h5>Kantor</h5>
           <ul>
             <li style="color:rgba(216,220,227,0.7)">Jl. BSD Grand Boulevard No. 1, BSD City, Tangerang Selatan</li>
-            <li style="color:rgba(216,220,227,0.7)">Mon–Sat, 09:00–18:00 WIB</li>
+            <li style="color:rgba(216,220,227,0.7)">Senin–Sabtu, 09.00–18.00 WIB</li>
             <li><a href="tel:+622112345678">+62 21 1234 5678</a></li>
           </ul>
         </div>
       </div>
       <div class="nlg-foot-bottom">
-        <span>© 2026 Nusantara Living Group. All rights reserved.</span>
-        <span>Developer License No. [PLACEHOLDER-LICENSE-NUMBER]</span>
+        <span>© 2026 Nusantara Living Group. Hak cipta dilindungi.</span>
+        <span>No. Izin Pengembang [PLACEHOLDER-LICENSE-NUMBER]</span>
       </div>
     </div>
   </footer>
 
   <!-- ============ STICKY WHATSAPP ============ -->
-  <a id="nlg-wa-float" href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20menjadwalkan%20Site%20Visit" target="_blank" rel="noopener" aria-label="Chat via WhatsApp">💬</a>
+  <a id="nlg-wa-float" href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20menjadwalkan%20Kunjungan%20Lokasi%20Pribadi" target="_blank" rel="noopener" aria-label="Hubungi via WhatsApp">💬</a>
 
   <!-- ============ MOBILE STICKY CTA ============ -->
   <div id="nlg-mobile-cta">
-    <a href="https://wa.me/6281234567890?text=Hello%2C%20I%20would%20like%20to%20schedule%20a%20Private%20Site%20Visit" target="_blank" rel="noopener" class="nlg-btn nlg-btn-primary">Book Site Visit</a>
+    <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20menjadwalkan%20Kunjungan%20Lokasi%20Pribadi" target="_blank" rel="noopener" class="nlg-btn nlg-btn-primary">Jadwalkan Kunjungan</a>
   </div>
 
   <!-- ============ PROJECT MODAL ============ -->
   <div id="nlg-modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="nlg-modal" id="nlg-modal" tabindex="-1">
-      <button type="button" class="nlg-modal-close" id="nlg-modal-close" aria-label="Close">✕</button>
+      <div class="nlg-modal-topbar">
+        <button type="button" class="nlg-modal-close" id="nlg-modal-close" aria-label="Tutup">✕</button>
+      </div>
+      <div class="nlg-modal-scroll">
       <div class="nlg-modal-hero">
         <img id="nlg-modal-img" src="" alt="">
       </div>
       <div class="nlg-modal-body">
-        <div class="nlg-eyebrow">Featured Development</div>
-        <h2 id="nlg-modal-title">Project Name</h2>
-        <div class="nlg-modal-loc" id="nlg-modal-loc">Location</div>
-        <p class="nlg-modal-desc" id="nlg-modal-desc">Description</p>
+        <div class="nlg-eyebrow">Proyek Unggulan</div>
+        <h2 id="nlg-modal-title">Nama Proyek</h2>
+        <div class="nlg-modal-loc" id="nlg-modal-loc">Lokasi</div>
+        <p class="nlg-modal-desc" id="nlg-modal-desc">Deskripsi</p>
 
         <div class="nlg-modal-highlights" id="nlg-modal-highlights"></div>
 
         <div class="nlg-modal-grid">
           <div>
-            <h4>Property Specifications</h4>
+            <h4>Spesifikasi Properti</h4>
             <table class="nlg-spec-table" id="nlg-modal-specs"></table>
           </div>
           <div>
-            <h4>Floor Plan</h4>
+            <h4>Denah Lantai</h4>
             <div class="nlg-modal-floorplan">
               <div class="nlg-fp-note">
-                <b>Floor plan preview</b>
-                Replace with the actual floor plan image for this unit type (e.g. /wp-content/uploads/floorplan-[project].jpg).
+                <b>Pratinjau Denah Lantai</b>
+                Ganti dengan gambar denah lantai asli untuk tipe unit ini (misalnya /wp-content/uploads/floorplan-[project].jpg).
               </div>
             </div>
           </div>
         </div>
 
         <div class="nlg-modal-cta-row">
-          <a href="#" id="nlg-modal-wa" class="nlg-btn nlg-modal-wa nlg-magnetic" target="_blank" rel="noopener">Book Site Visit for this Project</a>
-          <a href="#nlg-kpr" class="nlg-btn nlg-btn-ghost nlg-magnetic" id="nlg-modal-kpr">Calculate KPR for this Price</a>
+          <a href="#" id="nlg-modal-wa" class="nlg-btn nlg-modal-wa nlg-magnetic" target="_blank" rel="noopener">Jadwalkan Kunjungan untuk Proyek Ini</a>
+          <a href="#nlg-kpr" class="nlg-btn nlg-btn-ghost nlg-magnetic" id="nlg-modal-kpr">Hitung KPR untuk Harga Ini</a>
         </div>
+      </div>
       </div>
     </div>
   </div>
@@ -1280,110 +1317,110 @@ window.initNlgMap = initNlgMap;
       name: 'Cluster Anara',
       location: '📍 BSD City, Tangerang Selatan',
       image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80',
-      description: 'A quiet cluster of modern tropical homes designed for young families taking their first step into homeownership. Anara balances privacy with community — wide cross-ventilated living areas, a private garden strip, and a cluster-wide 24-hour security post.',
+      description: 'Cluster hunian tropis modern yang tenang, dirancang untuk keluarga muda yang baru memulai langkah pertama memiliki rumah. Anara menyeimbangkan privasi dan kebersamaan — ruang keluarga dengan sirkulasi udara silang yang luas, taman pribadi, dan keamanan 24 jam se-cluster.',
       priceRaw: 2400000000,
       highlights: [
-        { icon: '🌿', text: 'Private garden strip on every unit' },
-        { icon: '🔒', text: '24-hour cluster security & CCTV' },
-        { icon: '🚗', text: 'Two-car carport as standard' }
+        { icon: '🌿', text: 'Taman pribadi di setiap unit' },
+        { icon: '🔒', text: 'Keamanan & CCTV 24 jam se-cluster' },
+        { icon: '🚗', text: 'Carport 2 mobil sebagai standar' }
       ],
       specs: [
-        ['Land Area', '120 m²'],
-        ['Building Area', '90 m²'],
-        ['Bedrooms', '3'],
-        ['Bathrooms', '2'],
-        ['Certificate', 'SHM (Sertifikat Hak Milik)'],
-        ['Electricity', '2,200 VA'],
-        ['Starting Price', 'Rp 2.4 Miliar'],
-        ['Est. Monthly KPR', 'Rp 14.2 juta']
+        ['Luas Tanah', '120 m²'],
+        ['Luas Bangunan', '90 m²'],
+        ['Kamar Tidur', '3'],
+        ['Kamar Mandi', '2'],
+        ['Sertifikat', 'SHM (Sertifikat Hak Milik)'],
+        ['Listrik', '2,200 VA'],
+        ['Harga Mulai', 'Rp 2.4 Miliar'],
+        ['Estimasi Cicilan KPR per Bulan', 'Rp 14.2 juta']
       ]
     },
     kanaya: {
       name: 'Kanaya Residence',
       location: '📍 Serpong, Tangerang Selatan',
       image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1400&q=80',
-      description: 'Kanaya Residence is built for growing families ready to upgrade. Larger floor plates, a dedicated home-office nook, and a rooftop-ready structure give room to grow without moving again in five years.',
+      description: 'Kanaya Residence dibangun untuk keluarga berkembang yang siap upgrade hunian. Luas bangunan lebih besar, area kerja rumahan khusus, dan struktur siap rooftop memberi ruang untuk berkembang tanpa perlu pindah lagi dalam lima tahun ke depan.',
       priceRaw: 3800000000,
       highlights: [
-        { icon: '🏠', text: 'Dedicated home-office nook' },
-        { icon: '☀️', text: 'Rooftop-ready structural design' },
-        { icon: '🌳', text: '350m walk to Kanaya Central Park' }
+        { icon: '🏠', text: 'Area kerja rumahan khusus' },
+        { icon: '☀️', text: 'Struktur bangunan siap rooftop' },
+        { icon: '🌳', text: '350m jalan kaki ke Kanaya Central Park' }
       ],
       specs: [
-        ['Land Area', '150 m²'],
-        ['Building Area', '120 m²'],
-        ['Bedrooms', '4'],
-        ['Bathrooms', '3'],
-        ['Certificate', 'SHM (Sertifikat Hak Milik)'],
-        ['Electricity', '3,500 VA'],
-        ['Starting Price', 'Rp 3.8 Miliar'],
-        ['Est. Monthly KPR', 'Rp 22.1 juta']
+        ['Luas Tanah', '150 m²'],
+        ['Luas Bangunan', '120 m²'],
+        ['Kamar Tidur', '4'],
+        ['Kamar Mandi', '3'],
+        ['Sertifikat', 'SHM (Sertifikat Hak Milik)'],
+        ['Listrik', '3,500 VA'],
+        ['Harga Mulai', 'Rp 3.8 Miliar'],
+        ['Estimasi Cicilan KPR per Bulan', 'Rp 22.1 juta']
       ]
     },
     serena: {
       name: 'Serena Park',
       location: '📍 Cisauk, Tangerang',
       image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80',
-      description: 'Ready to move in. Serena Park is our most compact and efficient layout, popular with first-time buyers and investors alike thanks to strong rental demand from the nearby industrial and education corridor.',
+      description: 'Siap huni. Serena Park adalah layout paling ringkas dan efisien kami, digemari baik oleh pembeli rumah pertama maupun investor berkat tingginya permintaan sewa dari kawasan industri dan pendidikan di sekitarnya.',
       priceRaw: 1600000000,
       highlights: [
-        { icon: '✅', text: 'Ready to move in — no waiting' },
-        { icon: '📈', text: 'Strong rental demand nearby' },
-        { icon: '🚉', text: '12 minutes to commuter line' }
+        { icon: '✅', text: 'Siap huni — tanpa menunggu' },
+        { icon: '📈', text: 'Permintaan sewa tinggi di sekitar' },
+        { icon: '🚉', text: '12 menit ke stasiun KRL' }
       ],
       specs: [
-        ['Land Area', '90 m²'],
-        ['Building Area', '70 m²'],
-        ['Bedrooms', '2'],
-        ['Bathrooms', '2'],
-        ['Certificate', 'SHM (Sertifikat Hak Milik)'],
-        ['Electricity', '1,300 VA'],
-        ['Starting Price', 'Rp 1.6 Miliar'],
-        ['Est. Monthly KPR', 'Rp 9.4 juta']
+        ['Luas Tanah', '90 m²'],
+        ['Luas Bangunan', '70 m²'],
+        ['Kamar Tidur', '2'],
+        ['Kamar Mandi', '2'],
+        ['Sertifikat', 'SHM (Sertifikat Hak Milik)'],
+        ['Listrik', '1,300 VA'],
+        ['Harga Mulai', 'Rp 1.6 Miliar'],
+        ['Estimasi Cicilan KPR per Bulan', 'Rp 9.4 juta']
       ]
     },
     wisata: {
       name: 'Wisata Hijau',
       location: '📍 Pagedangan, Tangerang',
       image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1400&q=80',
-      description: 'Wisata Hijau sits closest to Nusantara Living\'s green belt — a landscaped walking corridor connecting every cluster to a shared park. Built for families who want a quieter, greener street without leaving BSD\'s job and school corridor.',
+      description: 'Wisata Hijau berada paling dekat dengan jalur hijau Nusantara Living — koridor pejalan kaki yang menghubungkan setiap cluster ke taman bersama. Dibangun untuk keluarga yang menginginkan jalan yang lebih tenang dan hijau, tanpa harus keluar dari koridor kerja dan sekolah BSD.',
       priceRaw: 2100000000,
       highlights: [
-        { icon: '🌳', text: 'Direct access to green-belt walking path' },
-        { icon: '🏫', text: '5 minutes to two international schools' },
-        { icon: '🧱', text: 'Corner unit with extra side yard' }
+        { icon: '🌳', text: 'Akses langsung ke jalur hijau pejalan kaki' },
+        { icon: '🏫', text: '5 menit ke dua sekolah internasional' },
+        { icon: '🧱', text: 'Unit hook dengan halaman samping ekstra' }
       ],
       specs: [
-        ['Land Area', '105 m²'],
-        ['Building Area', '85 m²'],
-        ['Bedrooms', '3'],
-        ['Bathrooms', '2'],
-        ['Certificate', 'SHM (Sertifikat Hak Milik)'],
-        ['Electricity', '2,200 VA'],
-        ['Starting Price', 'Rp 2.1 Miliar'],
-        ['Est. Monthly KPR', 'Rp 12.5 juta']
+        ['Luas Tanah', '105 m²'],
+        ['Luas Bangunan', '85 m²'],
+        ['Kamar Tidur', '3'],
+        ['Kamar Mandi', '2'],
+        ['Sertifikat', 'SHM (Sertifikat Hak Milik)'],
+        ['Listrik', '2,200 VA'],
+        ['Harga Mulai', 'Rp 2.1 Miliar'],
+        ['Estimasi Cicilan KPR per Bulan', 'Rp 12.5 juta']
       ]
     },
     cassia: {
       name: 'Cassia Heights',
       location: '📍 BSD City, Tangerang Selatan',
       image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1400&q=80',
-      description: 'Our flagship enclave for established professionals and multi-generational families. Cassia Heights offers the largest floor plates in the portfolio, gated-within-gated privacy, and finishes a tier above the rest of the lineup.',
+      description: 'Kawasan unggulan kami untuk profesional mapan dan keluarga besar lintas generasi. Cassia Heights menawarkan luas bangunan terbesar dalam portofolio kami, privasi berlapis di dalam kawasan berpagar, dan kualitas finishing satu tingkat di atas proyek lainnya.',
       priceRaw: 6200000000,
       highlights: [
-        { icon: '🚪', text: 'Gated-within-gated private enclave' },
-        { icon: '🏊', text: 'Access to residents-only pool & clubhouse' },
-        { icon: '🛗', text: 'Structure pre-fitted for home elevator' }
+        { icon: '🚪', text: 'Kawasan privat berpagar berlapis' },
+        { icon: '🏊', text: 'Akses kolam renang & clubhouse khusus penghuni' },
+        { icon: '🛗', text: 'Struktur siap dipasang lift rumah' }
       ],
       specs: [
-        ['Land Area', '200 m²'],
-        ['Building Area', '180 m²'],
-        ['Bedrooms', '5'],
-        ['Bathrooms', '4'],
-        ['Certificate', 'SHM (Sertifikat Hak Milik)'],
-        ['Electricity', '5,500 VA'],
-        ['Starting Price', 'Rp 6.2 Miliar'],
-        ['Est. Monthly KPR', 'Rp 36.4 juta']
+        ['Luas Tanah', '200 m²'],
+        ['Luas Bangunan', '180 m²'],
+        ['Kamar Tidur', '5'],
+        ['Kamar Mandi', '4'],
+        ['Sertifikat', 'SHM (Sertifikat Hak Milik)'],
+        ['Listrik', '5,500 VA'],
+        ['Harga Mulai', 'Rp 6.2 Miliar'],
+        ['Estimasi Cicilan KPR per Bulan', 'Rp 36.4 juta']
       ]
     }
   };
@@ -1398,7 +1435,7 @@ window.initNlgMap = initNlgMap;
     if (!data) return;
 
     document.getElementById('nlg-modal-img').src = data.image;
-    document.getElementById('nlg-modal-img').alt = data.name + ' exterior';
+    document.getElementById('nlg-modal-img').alt = data.name + ' - tampak luar';
     document.getElementById('nlg-modal-title').textContent = data.name;
     document.getElementById('nlg-modal-loc').textContent = data.location;
     document.getElementById('nlg-modal-desc').textContent = data.description;
@@ -1421,9 +1458,9 @@ window.initNlgMap = initNlgMap;
     });
 
     var waLink = document.getElementById('nlg-modal-wa');
-    var waMessage = encodeURIComponent('Halo, saya ingin menjadwalkan Site Visit untuk ' + data.name + '.');
+    var waMessage = encodeURIComponent('Halo, saya ingin menjadwalkan kunjungan lokasi untuk ' + data.name + '.');
     waLink.href = 'https://wa.me/6281234567890?text=' + waMessage;
-    waLink.textContent = 'Book Site Visit for ' + data.name;
+    waLink.textContent = 'Jadwalkan Kunjungan untuk ' + data.name;
 
     var kprLink = document.getElementById('nlg-modal-kpr');
     kprLink.onclick = function () {
@@ -1439,6 +1476,8 @@ window.initNlgMap = initNlgMap;
     modalBackdrop.classList.add('nlg-modal-open');
     modalBackdrop.setAttribute('aria-hidden', 'false');
     document.body.classList.add('nlg-no-scroll');
+    var scrollWrap = modalEl.querySelector('.nlg-modal-scroll');
+    if (scrollWrap) scrollWrap.scrollTop = 0;
     modalEl.focus();
   }
 
@@ -1466,6 +1505,18 @@ window.initNlgMap = initNlgMap;
       closeNlgModal();
     }
   });
+
+  /* ---------- WA FLOAT: dim while over interactive KPR sliders ---------- */
+  var waFloat = document.getElementById('nlg-wa-float');
+  var kprSection = document.getElementById('nlg-kpr');
+  if (waFloat && kprSection && 'IntersectionObserver' in window) {
+    var waDimIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        waFloat.classList.toggle('nlg-wa-dim', entry.isIntersecting);
+      });
+    }, { threshold: 0.35 });
+    waDimIo.observe(kprSection);
+  }
 
   /* ---------- FAQ ACCORDION ---------- */
   root.querySelectorAll('.nlg-faq-item').forEach(function (item) {
@@ -1530,9 +1581,9 @@ window.initNlgMap = initNlgMap;
     document.getElementById('nlg-kpr-price-val').textContent = rupiah(price);
     document.getElementById('nlg-kpr-dp-val').textContent = dpPct + '%';
     document.getElementById('nlg-kpr-rate-val').textContent = rate + '%';
-    document.getElementById('nlg-kpr-term-val').textContent = term + ' years';
+    document.getElementById('nlg-kpr-term-val').textContent = term + ' tahun';
 
-    document.getElementById('nlg-out-installment').textContent = rupiah(monthlyPayment) + ' /mo';
+    document.getElementById('nlg-out-installment').textContent = rupiah(monthlyPayment) + ' /bulan';
     document.getElementById('nlg-out-loan').textContent = rupiah(loanAmount);
     document.getElementById('nlg-out-min-income').textContent = rupiah(minIncome);
     var dtiEl = document.getElementById('nlg-out-dti');
@@ -1541,7 +1592,7 @@ window.initNlgMap = initNlgMap;
 
     if (window.Chart) {
       var data = {
-        labels: ['Down Payment', 'Loan Amount'],
+        labels: ['Uang Muka', 'Jumlah Pinjaman'],
         datasets: [{ data: [dpAmount, loanAmount], backgroundColor: ['#C8A96A', '#2563EB'], borderWidth: 0 }]
       };
       if (kprChart) {
@@ -1601,7 +1652,7 @@ window.initNlgMap = initNlgMap;
     document.getElementById('nlg-inv-price-val').textContent = rupiah(price);
     document.getElementById('nlg-inv-appr-val').textContent = appr + '%';
     document.getElementById('nlg-inv-rent-val').textContent = rupiah(rent);
-    document.getElementById('nlg-inv-years-val').textContent = years + ' years';
+    document.getElementById('nlg-inv-years-val').textContent = years + ' tahun';
 
     animateValue(document.getElementById('nlg-inv-roi'), roi, false);
     animateValue(document.getElementById('nlg-inv-gain'), capitalGain, true);
