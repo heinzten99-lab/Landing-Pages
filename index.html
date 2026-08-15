@@ -89,14 +89,22 @@
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
     font-family: 'General Sans', sans-serif;
     font-weight: 600; font-size: 15px;
-    line-height: 1;
+    line-height: 1.3;
     padding: 16px 32px;
     border-radius: 999px;
     cursor: pointer;
     border: none;
     text-decoration: none;
+    text-align: center;
     transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), background 0.35s var(--ease);
-    white-space: nowrap;
+    /* Was `nowrap`: any button whose available width is narrower than its text
+       (a long project name inserted by JS, a fixed-width panel, a button given
+       oversized inline padding/font-size) would silently clip that text on
+       both sides instead of visibly failing — exactly what showed up in two
+       separate buttons across two separate sections. `normal` lets text wrap
+       onto a 2nd line instead; harmless for buttons that already fit on one
+       line, since they simply never reach the wrap point. */
+    white-space: normal;
   }
   #nlg-root .nlg-btn-primary { background: var(--btn); color: #fff; box-shadow: 0 8px 24px -8px rgba(37,99,235,0.6); }
   #nlg-root .nlg-btn-primary:hover { background: var(--btn-hover); transform: translateY(-2px); box-shadow: 0 14px 32px -10px rgba(37,99,235,0.8); }
@@ -430,6 +438,17 @@
     /* Section spacing: large desktop padding (120px/80px) is wasted space on mobile */
     #nlg-root section { padding: 32px 0; }
     #nlg-root .nlg-wrap { padding: 0 24px; }
+
+    /* Final CTA button carries oversized inline padding/font-size meant for
+       desktop (20px 44px / 16px) with no width limit of its own — on a narrow
+       screen its natural (shrink-to-fit) width could still crowd the edges
+       even after the white-space:normal fix above lets it wrap. Cap it and
+       right-size the padding so it sits fully inside the viewport. */
+    #nlg-final-cta .nlg-btn {
+      max-width: 100%;
+      padding: 16px 28px !important;
+      font-size: 15px !important;
+    }
 
     /* Font scaling: clamp() already shrinks most headings fluidly, this is a
        safety net for anything that isn't using clamp() */
