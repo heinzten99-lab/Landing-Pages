@@ -183,7 +183,7 @@
   #nlg-root .nlg-project-body .nlg-btn { width: 100%; margin-top: 8px; }
 
   /* ---------- KPR CALCULATOR ---------- */
-  #nlg-kpr { background: var(--surface); border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 60px -30px rgba(0,0,0,0.6); margin: 0 32px; padding: 64px; overflow-x: hidden; }
+  #nlg-root #nlg-kpr { background: var(--surface); border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 60px -30px rgba(0,0,0,0.6); margin: 0 32px; padding: 64px; overflow-x: hidden; }
   #nlg-kpr-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
   /* Classic CSS Grid trap: grid items default to min-width:auto, which stops a
      1fr column from ever shrinking below its content's intrinsic width (a long
@@ -389,7 +389,19 @@
   #nlg-root .nlg-modal-floorplan .nlg-fp-note { font-size: 13px; color: rgba(216,220,227,0.55); }
   #nlg-root .nlg-modal-floorplan .nlg-fp-note b { display: block; color: var(--gold); font-family: 'General Sans', sans-serif; font-size: 15px; margin-bottom: 8px; }
   #nlg-root .nlg-modal-cta-row { display: flex; gap: 14px; flex-wrap: wrap; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); }
-  #nlg-root .nlg-modal-cta-row .nlg-btn { flex: 1; min-width: 220px; }
+  /* flex:1 alone isn't enough — .nlg-btn's own `white-space:nowrap` gives it an
+     intrinsic min-content width equal to its full (dynamic, unpredictable-length)
+     text. Without min-width:0, a flex item never shrinks below that intrinsic
+     width, so long text — e.g. "Jadwalkan Kunjungan untuk Wisata Hijau" — pushes
+     the button past the row/modal edge instead of wrapping. min-width:0 lets it
+     actually shrink to the row's width; white-space:normal lets long text wrap
+     onto a second line instead of forcing overflow. */
+  #nlg-root .nlg-modal-cta-row .nlg-btn {
+    flex: 1;
+    min-width: 0;
+    white-space: normal;
+    text-align: center;
+  }
   #nlg-root .nlg-modal-wa { background: #25D366; color: #fff; }
   #nlg-root .nlg-modal-wa:hover { background: #1fb955; }
   body.nlg-no-scroll { overflow: hidden !important; }
@@ -469,7 +481,7 @@
     #nlg-timeline .nlg-tl-item:nth-child(odd) .nlg-tl-content,
     #nlg-timeline .nlg-tl-item:nth-child(even) .nlg-tl-content { grid-column: 2; text-align: left; }
     #nlg-timeline .nlg-tl-spacer { display: none; }
-    #nlg-kpr { margin: 0 20px; padding: 40px 28px; }
+    #nlg-root #nlg-kpr { margin: 0 20px; padding: 40px 28px; }
     #nlg-invest-out { grid-template-columns: 1fr; }
     #nlg-footer .nlg-foot-grid { grid-template-columns: 1fr; gap: 32px; }
 
